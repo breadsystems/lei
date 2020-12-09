@@ -64,7 +64,7 @@
                   (core/stack)
                   (core/sidebar {:space (rem 1)
                                  :content-min-width (percent 60)
-                                 :sidebar-width (ch 25)}))]
+                                 :sidebar-width (ch 20)}))]
    [:body
     [:header
      [:h1 "Lei"]
