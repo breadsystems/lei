@@ -51,6 +51,15 @@
      [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
     (core/stack)
 
+    ;; Same as above, but passing an empty map
+    [[:.stack {:display :flex
+               :flex-direction :column
+               :justify-content :flex-start}]
+     [(sel/> :.stack :*) {:margin-top 0
+                          :margin-bottom 0}]
+     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
+    (core/stack {})
+
     ;; Using a custom class, non-recursive
     [[:.special {:display :flex
                  :flex-direction :column
@@ -58,7 +67,16 @@
      [(sel/> :.special :*) {:margin-top 0
                             :margin-bottom 0}]
      [(sel/> :.special (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
-    (core/stack {:class :.special})))
+    (core/stack {:class :.special})
+
+    ;; Using default class, recursive
+    [[:.stack {:display :flex
+               :flex-direction :column
+               :justify-content :flex-start}
+      [:* {:margin-top 0
+           :margin-bottom 0}]
+      [(sel/+ :* :*) {:margin-top (u/rem 1.5)}]]]
+    (core/stack {:recursive? true})))
 
 (comment
   (garden/css [:.x [(sel/+ :* :*) {:foo :bar}]])
