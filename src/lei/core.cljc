@@ -74,20 +74,21 @@
    (stack {}))
   ([{:keys [class recursive?]}]
    (let [class (or class :.stack)
+         stack-rule [class {:display :flex
+                            :flex-direction :column
+                            :justify-content :flex-start}]
+         ;; Nested rules are the same irrespective of recursion;
+         ;; only the selectors differ.
          nest (fn [sel rules]
                 (if recursive?
                   ;; regular owl: .stack * + *
                   [class [sel rules]]
                   ;; caret plus owl: .stack > * + *
-                  [(s/> class sel) rules]))]
-     [[class {:display :flex
-              :flex-direction :column
-              :justify-content :flex-start}]
-      ;; Nested rules are the same irrespective of recursion;
-      ;; only the selectors differ.
-      (nest :* {:margin-top 0
-                :margin-bottom 0})
-      (nest (s/+ * *) {:margin-top (rem 1.5)})])))
+                  [(s/> class sel) rules]))
+         child-rule (nest :* {:margin-top 0
+                              :margin-bottom 0})
+         grandchild-rule (nest (s/+ * *) {:margin-top (rem 1.5)})]
+     [stack-rule child-rule grandchild-rule])))
 
 (defn sidebar [{:keys [container content-min-width sidebar-width space]}]
   (let [container (or container :.with-sidebar)
