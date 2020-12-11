@@ -74,6 +74,21 @@
   (garden/css (axioms))
   (garden/css (axioms {:measure 50})))
 
+(defn modular-scale [opts prop initial & selectors]
+  (let [[opts prop initial selectors]
+        (if (map? opts)
+          [opts prop initial selectors]
+          [{} opts prop (cons initial selectors)])
+        {:keys [ratio op]} (merge {:ratio 1.618 :op ga//} opts)]
+    (vec (loop [rules []
+                  measurement initial
+                  [selector & rest] selectors]
+             (if (nil? selector)
+               rules
+               (recur (conj rules [selector {prop measurement}])
+                      (op measurement 1 ratio)
+                      rest))))))
+
 (defn stack
   ([]
    (stack {}))

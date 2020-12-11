@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as str]
    [clojure.test :refer [deftest are]]
+   [garden.arithmetic :as ga]
    [garden.core :as garden]
    [garden.selectors :as sel]
    [garden.units :as u]
@@ -37,6 +38,37 @@
     ;; Without centering (only apply max-width)
     [:body {:max-width (u/rem 80)}]
     (core/wrapper-axiom {:center? false})))
+
+(deftest test-modular-scale
+  (are [css args]
+       (= css (apply core/modular-scale args))
+
+    ;; Default ratio, default op
+    [[:h1 {:font-size (u/em 20)}]
+     [:h2 {:font-size (u/em (/ 20 1.618))}]
+     [:h3 {:font-size (u/em (/ 20 1.618 1.618))}]
+     [:h4 {:font-size (u/em (/ 20 1.618 1.618 1.618))}]
+     [:h5 {:font-size (u/em (/ 20 1.618 1.618 1.618 1.618))}]
+     [:h6 {:font-size (u/em (/ 20 1.618 1.618 1.618 1.618 1.618))}]]
+    [:font-size (u/em 20) :h1 :h2 :h3 :h4 :h5 :h6]
+
+    ;; Ratio of 1.5
+    [[:h1 {:font-size (u/em 20)}]
+     [:h2 {:font-size (u/em (/ 20 1.5))}]
+     [:h3 {:font-size (u/em (/ 20 1.5 1.5))}]
+     [:h4 {:font-size (u/em (/ 20 1.5 1.5 1.5))}]
+     [:h5 {:font-size (u/em (/ 20 1.5 1.5 1.5 1.5))}]
+     [:h6 {:font-size (u/em (/ 20 1.5 1.5 1.5 1.5 1.5))}]]
+    [{:ratio 1.5} :font-size (u/em 20) :h1 :h2 :h3 :h4 :h5 :h6]
+
+    ;; Ratio of 1.5, op of ga/*
+    [[:h6 {:font-size (u/em 1)}]
+     [:h5 {:font-size (u/em (* 1 1.5))}]
+     [:h4 {:font-size (u/em (* 1 1.5 1.5))}]
+     [:h3 {:font-size (u/em (* 1 1.5 1.5 1.5))}]
+     [:h2 {:font-size (u/em (* 1 1.5 1.5 1.5 1.5))}]
+     [:h1 {:font-size (u/em (* 1 1.5 1.5 1.5 1.5 1.5))}]]
+    [{:ratio 1.5 :op ga/*} :font-size (u/em 1) :h6 :h5 :h4 :h3 :h2 :h1]))
 
 (deftest test-stack
   (are [x y] (= (str/split (garden/css x) #"\n")
