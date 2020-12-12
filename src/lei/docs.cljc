@@ -86,11 +86,13 @@
      (when subheading [:h2 subheading])]
     [:div.with-sidebar
      [:div
+      ;; Sidebar
       [:nav
        [:ul
         (for [{:keys [name]} (or sections [])]
           [:li [:a {:href (anchor name)} name]])]]
-      [:div.stack
+      ;; Main Content
+      [:main.stack
        (for [{:keys [name content html-content]} (or sections [])]
          [:div
           (if html-content
