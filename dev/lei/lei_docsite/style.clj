@@ -10,7 +10,7 @@
 
 (def screen
   [(core/axioms)
-   (core/modular-scale :font-size (em 3.5) :h1 :h2 :h3 :h4)
+   (core/modular-scale :font-size (em 3.5) :h1 :h2 :h3 :h4 :h5)
    [:body {:background-color translucent-rose
            :font-size (px 18)
            :padding (rem 1)}]
