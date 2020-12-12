@@ -6,8 +6,6 @@
    [lei.lei-docsite.style :as style]
    [lei.core :as core]
    [markdown.core :as md]
-   [org.httpkit.server :as http]
-   [ring.middleware.reload :refer [wrap-reload]]
    [rum.core :as rum]))
 
 
@@ -28,10 +26,10 @@
    [:a {:name (apply slug sections)}]
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
-(defn document-var [v]
+(defn docs [data]
   (let [{:lei/keys [name description options examples]
          :keys [doc]}
-        (meta v)
+        data
         section-name name]
     [:article
      (heading :h2 section-name)
@@ -57,7 +55,7 @@
 (defn var->docs [v]
   (let [m (meta v)]
     {:name (:lei/name m)
-     :content (document-var #'core/stack)}))
+     :content (docs m)}))
 
 (def sections
   [{:name "Intro"
@@ -69,51 +67,33 @@
 (defn docsite [_]
   {:status 200
    :headers {"content-type" "text/html"}
-   :body (rum/render-static-markup [:html
-   [:head
-    [:meta {:charset "utf-8"}]
-    [:title "Lei 🌺"]
-    [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
-    [:style {:dangerouslySetInnerHTML {:__html (garden/css style/screen)}}]]
-   [:body
-    [:header
-     [:h1 "Lei"]
-     [:h2 "A design system library"]]
-    [:div.with-sidebar
-     [:div
-      [:nav
-       [:ul
-        (for [{:keys [name]} sections
-              :let [link (str "#" (slug name))]]
-          [:li [:a {:href link} name]])]]
-      [:div.stack
-       (for [{:keys [name content html-content]} sections]
-         [:div
-          (if html-content
-            [:<>
-             (heading :h2 name)
-             [:div {:dangerouslySetInnerHTML {:__html html-content}}]]
-            [:<> content])
-          [:div [:a {:href "#"} "️↑ Top"]]])]]]]])})
-
-(defonce server (atom nil))
-
-(defn- start! []
-  (println "🌺 Running at http://localhost:8001")
-  (reset! server
-          (http/run-server
-           (wrap-reload #'docsite {:dirs ["src" "dev"]})
-           {:port 8001})))
-
-(defn- stop! []
-  (when-not (nil? server)
-    (@server :timeout 100)
-    (reset! server nil)))
+   :body
+   (rum/render-static-markup
+    [:html
+     [:head
+      [:meta {:charset "utf-8"}]
+      [:title "Lei 🌺"]
+      [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
+      [:style {:dangerouslySetInnerHTML {:__html (garden/css style/screen)}}]]
+     [:body
+      [:header
+       [:h1 "Lei"]
+       [:h2 "A design system library"]]
+      [:div.with-sidebar
+       [:div
+        [:nav
+         [:ul
+          (for [{:keys [name]} sections]
+            [:li [:a {:href (slug name)} name]])]]
+        [:div.stack
+         (for [{:keys [name content html-content]} sections]
+           [:div
+            (if html-content
+              [:<>
+               (heading :h2 name)
+               [:div {:dangerouslySetInnerHTML {:__html html-content}}]]
+              [:<> content])
+            [:div [:a {:href "#"} "️↑ Top"]]])]]]]])})
 
 (comment
-  (start!)
-  (stop!)
-  (do (stop!) (start!)))
-
-(defn -main []
-  (start!))
+  (docsite {}))
