@@ -145,22 +145,29 @@
 
 (defn
   ^{:lei/name "Sidebar"
-    :lei/description 
-  "Rules for styling the Sidebar pattern. Assumes exactly two children of the
-   intermediate flexbox wrapper element. Takes the following options:
-   * container - the selector for the wrapper element. Default: :.with-sidebar
-   * content-min-width - the minimum width, in any unit, for the content element.
-     Required.
-   * sidebar-width - the width of the sidebar, in any unit. Declared as flex-basis
-     in the resulting CSS.
-   * space - the horizontal space, in any unit, between sidebar and content.
-     Default: 1rem"
-    }
+    :lei/description
+    "Rules for styling the Sidebar pattern. Assumes exactly two children of the
+     intermediate flexbox wrapper element."
+
+    :lei/options
+    [{:name :content-min-width
+      :desc "The minimum width, in any unit, for the current element."
+      :required? true}
+     {:name :sidebar-width
+      :desc "The width of the sidebar, in any unit. Declared as flex-basis
+             in the resulting CSS."
+      :required? true}
+     {:name :container
+      :desc "The selector for the wrapper element."
+      :default :.with-sidebar}
+     {:name :space
+      :desc "The horizontal space, in any unit, between sidebar and content."
+      :default "1rem"}]}
   sidebar
   [{:keys [container content-min-width sidebar-width space]}]
   {:pre [(u/unit? content-min-width)
+         (u/unit? sidebar-width)
          (or (nil? container) (s/selector? container))
-         (or (nil? sidebar-width) (u/unit? sidebar-width))
          (or (nil? space) (u/unit? space))]}
   (let [container (or container :.with-sidebar)
         space (or space (rem 1))
