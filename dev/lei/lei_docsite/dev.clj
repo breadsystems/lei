@@ -6,11 +6,16 @@
 
 (defonce server (atom nil))
 
+(defn- app [_]
+  {:status 200
+   :headers {"content-type" "text/html"}
+   :body (docsite/docsite)})
+
 (defn- start! []
   (println "🌺 Running at http://localhost:8001")
   (reset! server
           (http/run-server
-           (wrap-reload #'docsite/docsite {:dirs ["src" "dev"]})
+           (wrap-reload #'app {:dirs ["src" "dev"]})
            {:port 8001})))
 
 (defn- stop! []

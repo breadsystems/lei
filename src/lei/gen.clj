@@ -7,7 +7,7 @@
     (println "Requiring" (namespace sym))
     (require (symbol (namespace sym)))
     (let [render (deref (resolve sym))
-          html (:body (render {}))
+          html (render)
           out (or path "dist/index.html")]
       (spit out html)
       (println (format "Output %d bytes to %s" (count html) out)))))
