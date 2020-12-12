@@ -12,7 +12,8 @@
    (core/axioms)
    (core/modular-scale :font-size (em 3.5) :h1 :h2 :h3 :h4)
    [:body {:background-color translucent-rose
-           :font-size (px 18)}]
+           :font-size (px 18)
+           :padding (rem 1)}]
    [:* {:font-family :sans-serif}]
    [:header {:text-align :center}]
    [:h1
