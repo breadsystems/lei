@@ -64,7 +64,7 @@
 (defmulti page :lei/renderer)
 
 (defmethod page :default [{:keys [title styles heading subheading sections]}]
-  [:html
+  [:html {:lang "en-US"}
    [:head
     [:meta {:charset "utf-8"}]
     [:title title]
