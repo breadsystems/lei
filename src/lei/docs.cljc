@@ -79,7 +79,7 @@
       [:nav
        [:ul
         (for [{:keys [name]} (or sections [])]
-          [:li [:a {:href (slug name)} name]])]]
+          [:li [:a {:href (anchor name)} name]])]]
       [:div.stack
        (for [{:keys [name content html-content]} (or sections [])]
          [:div
