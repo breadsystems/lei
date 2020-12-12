@@ -99,7 +99,7 @@
      [(sel/> :.special :*) {:margin-top 0
                             :margin-bottom 0}]
      [(sel/> :.special (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
-    (core/stack {:class :.special})
+    (core/stack {:selector :.special})
 
     ;; Using default class, recursive
     [[:.stack {:display :flex

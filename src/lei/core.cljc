@@ -89,22 +89,45 @@
                       (op measurement 1 ratio)
                       rest))))))
 
-(defn stack
+(defn
+  ^{:lei/name "Stack"
+    :lei/description "Two or more vertically stacked elements."
+    :lei/options
+    [{:name :selector
+      :desc "The selector for the top-level Stack element."
+      :default :.stack}
+     {:name :recursive?
+      :desc "Whether to apply spacing (vertical margins) recursively."
+      :default nil}]
+    :lei/examples
+    [{:name "Default"
+      :form '(lei.core/stack)
+      :desc "You can pass nothing (or an empty map) for a default Stack."}
+     {:name "Custom selector"
+      :form '(lei.core/stack {:selector :main})
+      :desc "Specify a custom selector to target the top-level Stack
+             element. Can be any valid Garden selector."}
+     {:name "Recursion"
+      :form '(lei.core/stack {:recursive? true})
+      :desc "Makes the Stack recursive, targetting all series of
+             two or more elements inside rather than only immediate
+             children of `selector`."}]}
+  stack
   ([]
    (stack {}))
-  ([{:keys [class recursive?]}]
-   (let [class (or class :.stack)
-         stack-rule [class {:display :flex
-                            :flex-direction :column
-                            :justify-content :flex-start}]
+  ([{:keys [selector recursive?]}]
+   (let [selector (or selector :.stack)
+         stack-rule [selector {:display :flex
+                               :flex-direction :column
+                               :justify-content :flex-start}]
          ;; Nested rules are the same irrespective of recursion;
          ;; only the selectors differ.
          nest (fn [sel rules]
                 (if recursive?
                   ;; regular owl: .stack * + *
-                  [class [sel rules]]
+                  [selector [sel rules]]
                   ;; caret plus owl: .stack > * + *
-                  [(s/> class sel) rules]))
+                  [(s/> selector sel) rules]))
          child-rule (nest * {:margin-top 0
                              :margin-bottom 0})
          grandchild-rule (nest (s/+ * *) {:margin-top (rem 1.5)})]
@@ -113,10 +136,12 @@
 (comment
   (garden/css (stack))
   (garden/css (stack {:recursive? true}))
-  (garden/css (stack {:class :.my-stack}))
-  (garden/css (stack {:class :.stackalicious :recursive? true})))
+  (garden/css (stack {:selector :.my-stack}))
+  (garden/css (stack {:selector :.stackalicious :recursive? true})))
 
-(defn sidebar
+(defn
+  ^{:lei/name "Sidebar"
+    :lei/description 
   "Rules for styling the Sidebar pattern. Assumes exactly two children of the
    intermediate flexbox wrapper element. Takes the following options:
    * container - the selector for the wrapper element. Default: :.with-sidebar
@@ -126,6 +151,8 @@
      in the resulting CSS.
    * space - the horizontal space, in any unit, between sidebar and content.
      Default: 1rem"
+    }
+  sidebar
   [{:keys [container content-min-width sidebar-width space]}]
   {:pre [(u/unit? content-min-width)
          (or (nil? container) (s/selector? container))
