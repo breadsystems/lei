@@ -101,6 +101,15 @@
      [(sel/> :.special (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
     (core/stack {:selector :.special})
 
+    ;; Using custom spacing, non-recursive
+    [[:.stack {:display :flex
+               :flex-direction :column
+               :justify-content :flex-start}]
+     [(sel/> :.stack :*) {:margin-top 0
+                          :margin-bottom 0}]
+     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/em 2)}]]
+    (core/stack {:space (u/em 2)})
+
     ;; Using default class, recursive
     [[:.stack {:display :flex
                :flex-direction :column

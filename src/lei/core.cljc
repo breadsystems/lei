@@ -96,6 +96,9 @@
     [{:name :selector
       :desc "The selector for the top-level Stack element."
       :default :.stack}
+     {:name :space
+      :desc "Vertical spacing, in any unit."
+      :default "2em"}
      {:name :recursive?
       :desc "Whether to apply spacing (vertical margins) recursively."
       :default nil}]
@@ -115,8 +118,9 @@
   stack
   ([]
    (stack {}))
-  ([{:keys [selector recursive?]}]
+  ([{:keys [selector space recursive?]}]
    (let [selector (or selector :.stack)
+         space (or space (rem 1.5))
          stack-rule [selector {:display :flex
                                :flex-direction :column
                                :justify-content :flex-start}]
@@ -130,7 +134,7 @@
                   [(s/> selector sel) rules]))
          child-rule (nest * {:margin-top 0
                              :margin-bottom 0})
-         grandchild-rule (nest (s/+ * *) {:margin-top (rem 1.5)})]
+         grandchild-rule (nest (s/+ * *) {:margin-top space})]
      [stack-rule child-rule grandchild-rule])))
 
 (comment
