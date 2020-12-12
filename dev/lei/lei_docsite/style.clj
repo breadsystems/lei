@@ -6,8 +6,8 @@
    [lei.core :as core]
    [lei.util :as util]))
 
-(def translucent-rose "#ffe9ede3")
-(def green "rgb(8, 142, 8)")
+(def translucent-rose "#ffe9edbf")
+(def green "rgb(7, 128, 7)")
 
 (def screen
   [(core/axioms)
