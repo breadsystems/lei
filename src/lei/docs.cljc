@@ -10,6 +10,12 @@
       slurp
       md/md-to-html-string))
 
+(defn dangerous [tag attrs & [html]]
+  (let [[attrs html] (if (map? attrs )
+                       [attrs html]
+                       [{} attrs])]
+    [tag (merge attrs {:dangerouslySetInnerHTML {:__html html}})]))
+
 (defn slug [& ss]
   (if ss
     (str/lower-case
@@ -42,7 +48,7 @@
         (for [{:keys [name form desc]} examples]
           [:div
            (section-heading :h4 section-name "examples" name)
-           [:p desc]
+           (dangerous :div (md/md-to-html-string desc))
            ;; TODO code formatting
            [:pre (str form)]
            [:p "Result:"]
@@ -55,7 +61,7 @@
            (section-heading :h4 section-name "options" name)
            [:p
             (when required? [:strong "Required. "])
-            desc
+            (dangerous :div (md/md-to-html-string desc))
             (when default [:span " Default: " [:code default]])]])])]))
 
 (defn var->map [v]

@@ -154,7 +154,7 @@
       :desc "The minimum width, in any unit, for the current element."
       :required? true}
      {:name :sidebar-width
-      :desc "The width of the sidebar, in any unit. Declared as flex-basis
+      :desc "The width of the sidebar, in any unit. Declared as `flex-basis`
              in the resulting CSS."
       :required? true}
      {:name :container
