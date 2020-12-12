@@ -27,6 +27,11 @@
          :white-space :pre-wrap
          :word-wrap :break-word}])
 
+(defn code-fonts
+  "Default fonts for the code and pre tags."
+  []
+  [:code :pre {:font-family ["Courier New" "Courier" "monospace"]}])
+
 (def system-serif
   ["Georgia" "Times" "Times New Roman" "serif"])
 

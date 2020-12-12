@@ -24,18 +24,19 @@
            :font-size (px 18)
            :padding (rem 1)}]
    [:* {:font-family util/system-sans}]
-   [:h1 :h2 :h3 :h4 :h5 :h6 {:color green
-                             :font-family util/system-serif}]
+   [:h1 :h2 :h3 :h4 :h5 :h6 {:color green}]
    [:h2 :h3 :h4 :h5 :h6 {:margin-top 0}]
-   [:h1
-    [:&:after {:content "'🌺'"
-               :display :inline-block
-               :margin-left (rem 1)}]]
-   [(s/> :header :h2) {:font-style :italic}]
+   [(s/> :body :header :*) {:font-family util/system-serif
+                         :font-style :italic}]
    [:a {:text-decoration :none
         :font-weight 700
         :color green}]
+   (util/code-fonts)
    ;; Misc
    [:header {:text-align :center}]
+   [:h1 [:&:after {:content "'🌺'"
+                   :display :inline-block
+                   :margin-left (rem 1)
+                   :font-style :normal}]]
    (util/nav>ul)
    (util/pre)])
