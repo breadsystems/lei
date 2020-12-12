@@ -1,6 +1,4 @@
-(ns lei.gen
-  (:require
-   [lei.core :as core]))
+(ns lei.gen)
 
 (defn -main [generate & [path]]
   (let [sym (symbol generate)]

@@ -1,6 +1,6 @@
-(ns lei.lei-docsite.dev
+(ns lei.docsite.dev
   (:require
-   [lei.lei-docsite.core :as docsite]
+   [lei.docsite.core :as docsite]
    [org.httpkit.server :as http]
    [ring.middleware.reload :refer [wrap-reload]]))
 

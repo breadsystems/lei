@@ -1,11 +1,11 @@
-(ns lei.lei-docsite.core
+(ns lei.docsite
   (:require
-   [lei.lei-docsite.style :as style]
+   [lei.docsite.style :as style]
    [lei.docs :as docs]
    [lei.core :as core]
    [rum.core :as rum]))
 
-(defn docsite []
+(defn index-html []
   (rum/render-static-markup
    (docs/render {:title "Lei 🌺"
                  :styles style/screen

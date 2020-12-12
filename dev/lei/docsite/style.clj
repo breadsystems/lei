@@ -1,4 +1,4 @@
-(ns lei.lei-docsite.style
+(ns lei.docsite.style
   (:refer-clojure :exclude [rem])
   (:require
    [garden.selectors :as s]
