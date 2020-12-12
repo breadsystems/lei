@@ -5,15 +5,15 @@
    [garden.core :as garden]
    [markdown.core :as md]))
 
-  (defn path->html [path]
-    (-> (io/resource path)
-        slurp
-        md/md-to-html-string))
+(defn path->html [path]
+  (-> (io/resource path)
+      slurp
+      md/md-to-html-string))
 
 (defn slug [& ss]
   (if ss
     (str/lower-case
-     (str/join "-" (map #(str/replace % #" " "-") (filter string? ss))))
+     (str/join "-" (map (comp str #(str/replace % #" " "-")) ss)))
     ""))
 
 (defn anchor [& ss]
@@ -22,11 +22,9 @@
     ""))
 
 (defn section-heading [tag & sections]
-  (if (seq sections)
-    [:<>
-     [:a {:name (apply slug sections)}]
-     [:a {:href (apply anchor sections)} [tag (last sections)]]]
-    ""))
+  [:<>
+   [:a {:name (apply slug sections)}]
+   [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
 (defn docs [data]
   (let [{:lei/keys [name description options examples]
