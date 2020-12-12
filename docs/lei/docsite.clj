@@ -8,6 +8,7 @@
 (defn index-html []
   (rum/render-static-markup
    (docs/page {:title "Lei 🌺"
+               :description "A design system library for Clojure and ClojureScript"
                :styles style/screen
                :heading "Lei"
                :subheading "A design system library"

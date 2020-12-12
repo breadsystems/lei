@@ -71,11 +71,13 @@
 
 (defmulti page :lei/renderer)
 
-(defmethod page :default [{:keys [title styles heading subheading sections]}]
+(defmethod page :default [{:keys [title description styles heading subheading sections]}]
   [:html {:lang "en-US"}
    [:head
     [:meta {:charset "utf-8"}]
     [:title title]
+    (when-let [metadesc (or description subheading)]
+      [:meta {:name "description" :content metadesc}])
     [:meta {:name "viewport" :content "width=device-width, initial-scale=1"}]
     [:style {:dangerouslySetInnerHTML {:__html (garden/css styles)}}]]
    [:body
