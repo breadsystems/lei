@@ -50,10 +50,12 @@
      (when options
        [:section
         (section-heading :h3 name "Options")
-        (for [{:keys [name desc default]} options]
+        (for [{:keys [name desc default required?]} options]
           [:div
            (section-heading :h4 section-name "options" name)
-           [:p desc
+           [:p
+            (when required? [:strong "Required. "])
+            desc
             (when default [:span " Default: " [:code default]])]])])]))
 
 (defn var->map [v]
