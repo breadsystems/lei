@@ -24,6 +24,8 @@
     (reset! server nil)))
 
 (comment
+  (d/index-html)
+
   (start!)
   (stop!)
   (do (stop!) (start!)))

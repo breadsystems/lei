@@ -26,7 +26,9 @@
    [:a {:name (apply slug sections)}]
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
-(defn docs [data]
+(defmulti pattern :lei/renderer)
+
+(defmethod pattern :default [data]
   (let [{:lei/keys [name description options examples]
          :keys [doc]}
         data
@@ -54,14 +56,14 @@
            [:p desc
             (when default [:span " Default: " [:code default]])]])])]))
 
-(defn var->docs [v]
+(defn var->map [v]
   (let [m (meta v)]
     {:name (:lei/name m)
-     :content (docs m)}))
+     :content (pattern m)}))
 
-(defmulti render :lei/renderer)
+(defmulti page :lei/renderer)
 
-(defmethod render :default [{:keys [title styles heading subheading sections]}]
+(defmethod page :default [{:keys [title styles heading subheading sections]}]
   [:html
    [:head
     [:meta {:charset "utf-8"}]
