@@ -1,4 +1,4 @@
-Lei is a Clojure/Script library for building visual design systems. It provides simple abstractions for building CSS layouts with [Garden](https://github.com/noprompt/garden) alongside [Hiccup](https://github.com/weavejester/hiccup)-style markup data (HTML tags and their children as vectors; sets of properties as maps). Heavily inspired by *[Every Layout](https://every-layout.dev/)*, Lei was built to help you design reusable *aspects* of layout components that *compose* with each other into a cohesive whole.
+Lei is a Clojure/Script library for building visual design systems. It provides simple abstractions for building CSS layouts with [Garden](https://github.com/noprompt/garden) alongside [Hiccup](https://github.com/weavejester/hiccup)-style markup data (HTML tags and their children as vectors; sets of properties as maps). Heavily inspired by *[Every Layout](https://every-layout.dev/)*, Lei was built to help you design reusable aspects of layout components that *compose* with each other into a cohesive whole.
 
 Design systems built in Lei offer several advantages over more traditional component libraries, such as Bootstrap:
 
