@@ -16,6 +16,6 @@
                   :subheading "A design system library"
                   :sections
                   [{:name "Intro"
-                    :html-content (docs/md-path->html "md/intro.md")}
+                    :html-content (docs/path->html "md/intro.md")}
                    (docs/var->docs #'core/stack)
                    (docs/var->docs #'core/sidebar)]}))})

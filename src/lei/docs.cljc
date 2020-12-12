@@ -43,7 +43,7 @@
                [:section
                 (section-heading :h4 section-name "examples" name)
                 [:p desc]
-              ;; TODO code formatting
+                ;; TODO code formatting
                 [:pre (str form)]
                 [:p "Result:"]
                 [:pre (str (eval form))]])]])
