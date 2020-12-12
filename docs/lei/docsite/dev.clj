@@ -1,6 +1,6 @@
 (ns lei.docsite.dev
   (:require
-   [lei.docsite.core :as docsite]
+   [lei.docsite :as d]
    [org.httpkit.server :as http]
    [ring.middleware.reload :refer [wrap-reload]]))
 
@@ -9,7 +9,7 @@
 (defn- app [_]
   {:status 200
    :headers {"content-type" "text/html"}
-   :body (docsite/docsite)})
+   :body (d/index-html)})
 
 (defn- start! []
   (println "🌺 Running at http://localhost:8001")
