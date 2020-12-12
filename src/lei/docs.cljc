@@ -39,22 +39,22 @@
      (when examples
        [:section
         (section-heading :h3 name "Examples")
-        [:<> (for [{:keys [name form desc]} examples]
-               [:section
-                (section-heading :h4 section-name "examples" name)
-                [:p desc]
-                ;; TODO code formatting
-                [:pre (str form)]
-                [:p "Result:"]
-                [:pre (str (eval form))]])]])
+        (for [{:keys [name form desc]} examples]
+          [:<>
+           (section-heading :h4 section-name "examples" name)
+           [:p desc]
+           ;; TODO code formatting
+           [:pre (str form)]
+           [:p "Result:"]
+           [:pre (str (eval form))]])])
      (when options
        [:section
         (section-heading :h3 name "Options")
-        [:<> (for [{:keys [name desc default]} options]
-               [:section
-                (section-heading :h4 section-name "options" name)
-                [:p desc " "
-                 (when default [:strong "Default: " [:code default]])]])]])]))
+        (for [{:keys [name desc default]} options]
+          [:<>
+           (section-heading :h4 section-name "options" name)
+           [:p desc " "
+            (when default [:strong "Default: " [:code default]])]])])]))
 
 (defn var->docs [v]
   (let [m (meta v)]
