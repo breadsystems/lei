@@ -6,9 +6,7 @@
    [markdown.core :as md]))
 
 (defn path->html [path]
-  (-> (io/resource path)
-      slurp
-      md/md-to-html-string))
+  (-> (io/resource path) slurp md/md-to-html-string))
 
 (defn dangerous [tag attrs & [html]]
   (let [[attrs html] (if (map? attrs )
