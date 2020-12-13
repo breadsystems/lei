@@ -8,10 +8,14 @@
   ([handler]
    (generate! handler {}))
   ([handler opts]
-   (let [{:keys [path]} (merge {:path "dist/index.html"} opts)
-         html (handler)]
-     (spit path html)
-     (println (format "Wrote %d bytes to %s" (count html) path))
+   (let [{:keys [path]} (merge {:path "dist/index.html"} opts)]
+     (try
+       (let [html (handler)]
+         (spit path html)
+         (println (format "Wrote %d bytes to %s" (count html) path)))
+       (catch java.lang.Throwable ex
+         (println (format "Handler threw an exception: %s"
+                          (.getMessage ex)))))
      nil)))
 
 (defn watch! [dir handler opts]
