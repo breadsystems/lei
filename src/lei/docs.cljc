@@ -97,12 +97,12 @@
     [:div.with-sidebar
      [:div
       ;; Sidebar
-      [:nav
+      [:nav {:role :navigation}
        [:ul {:role :list}
         (for [{:keys [name]} (or sections [])]
           [:li [:a {:href (anchor name)} name]])]]
       ;; Main Content
-      [:main.stack
+      [:main.stack {:role :main}
        (for [{:keys [name content html-content]} (or sections [])]
          [:div
           (if html-content
