@@ -30,7 +30,7 @@
    (core/stack {:recursive? true})
    (core/sidebar {:space (rem 1)
                   :content-min-width (percent 60)
-                  :sidebar-width (ch 20)})
+                  :sidebar-width (ch 30)})
    ;; Align nav ul with top of main content
    [:nav [:ul {:margin-top (em 0.5)}]]
 
