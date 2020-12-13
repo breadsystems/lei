@@ -8,6 +8,30 @@
    [garden.units :as u]
    [lei.core :as core]))
 
+(deftest test-measure-axiom
+  (are [x y] (= (str/split (garden/css x) #"\n")
+                (str/split (garden/css y) #"\n"))
+
+    ;; Defaults
+    [[:* {:max-width (u/ch 80)}]
+     [:html :body :div :header :nav :main :footer {:max-width :none}]]
+    (core/measure-axiom)
+
+    ;; Defaults passing empty map
+    [[:* {:max-width (u/ch 80)}]
+     [:html :body :div :header :nav :main :footer {:max-width :none}]]
+    (core/measure-axiom {})
+
+    ;; Custom measure
+    [[:* {:max-width (u/ch 75)}]
+     [:html :body :div :header :nav :main :footer {:max-width :none}]]
+    (core/measure-axiom {:measure 75})
+    
+    ;; Custom exceptions
+    [[:* {:max-width (u/ch 80)}]
+     [:html :.custom {:max-width :none}]]
+    (core/measure-axiom {:measure-exceptions [:html :.custom]})))
+
 (deftest test-wrapper-axiom
   (are [x y] (= (str/split (garden/css x) #"\n")
                 (str/split (garden/css y) #"\n"))

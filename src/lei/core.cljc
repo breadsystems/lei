@@ -58,17 +58,25 @@
                          :margin-right :auto})]
      [selector (conj {:max-width width} margin-rules)])))
 
+(defn measure-axiom
+  ([]
+   (measure-axiom {}))
+  ([{:keys [measure measure-exceptions]}]
+   {:pre [(or (nil? measure) (int? measure))
+          (or (nil? measure-exceptions)
+              (and (vector? measure-exceptions)
+                   (every? s/selector? measure-exceptions)))]}
+   (let [measure (or measure 80)
+         exceptions (or measure-exceptions
+                        [:html :body :div :header :nav :main :footer])]
+     [[* {:max-width (ch measure)}]
+      (conj exceptions {:max-width :none})])))
+
 (defn axioms
   ([]
    (axioms {}))
-  ([{:keys [measure measure-exceptions] :as args}]
-   (let [measure (or measure 80)
-         measure-exceptions (or measure-exceptions
-                                [:html :body :div :header :nav :main :footer])]
-     [[* {:box-sizing :content-box
-          :max-width (ch measure)}]
-      (conj measure-exceptions {:max-width :none})
-      (wrapper-axiom args)])))
+  ([args]
+   [(measure-axiom args) (wrapper-axiom args)]))
 
 (comment
   (garden/css (axioms))
