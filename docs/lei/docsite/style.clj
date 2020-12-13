@@ -19,7 +19,6 @@
   [;; Global defaults
    resets/box-sizing
    resets/list-style-none
-   resets/smooth-scroll
    resets/body
    resets/wrap-pre
    resets/motion
