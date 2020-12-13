@@ -1,6 +1,7 @@
 (ns lei.util
   (:refer-clojure :exclude [*])
   (:require
+   [clojure.string :as str]
    [garden.selectors :as s]))
 
 (s/defselector *)
@@ -9,23 +10,20 @@
   {:pre [(map? m)]}
   [":root" m])
 
-(defn nav>ul
-  "Resets for the common `nav > ul` idiom."
-  []
-  [(s/> :nav :ul) {:list-style :none
-                   :padding-left 0}])
+(defmacro defutil [sym & [attrs]]
+  (let [s (str sym)
+        attrs (or attrs (let [[k v] (str/split s #":")] {k v}))
+        ;; Replace : with \\:
+        ;; ...replace = with \\=
+        ;; ...and prepend a dot
+        ->class (comp #(str/replace % #"(=|:)" "\\\\$1")
+                      #(if (str/starts-with? % ".") % (str "." %)))
+        class (->class s)]
+    `(do (def ~sym [~class ~attrs]))))
 
-(defn line-height
-  "Defaults for body text line-height."
-  []
-  [:p :li :blockquote {:line-height 1.5}])
-
-(defn pre
-  "Resets for pre tag: make its contents wrap and fit inside its container."
-  []
-  [:pre {:overflow-x :auto
-         :white-space :pre-wrap
-         :word-wrap :break-word}])
+(comment
+  (macroexpand '(defutil text:small {:font-size "0.8em"}))
+  (macroexpand '(defutil text-align:center)))
 
 (defn code-fonts
   "Default fonts for the code and pre tags."
