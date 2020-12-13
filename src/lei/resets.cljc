@@ -14,9 +14,6 @@
 (def list-style-none
   ["ul[role=list],ol[role=list]" {:list-style :none}])
 
-(def smooth-scroll
-  [:html {:scroll-behavior :smooth}])
-
 (def body
   [:body {:min-height "100vh"
           :text-rendering :optimizeSpeed
@@ -31,21 +28,27 @@
 (def input-font
   ["input,button,textarea,select" {:font :inherit}])
 
-(def honor-animation-preferences
-  (at-media {:prefers-reduced-motion :reduce}
-            ["*,*::before,*::after"
-             {:animation-duration "0.01ms !important"
-              :animation-iteration-count "1 !important"
-              :transition-duration "0.01ms !important"
-              :scroll-behavior "auto !important"}]))
+(def wrap-pre
+  [:pre {:overflow-x :auto
+         :white-space :pre-wrap
+         :word-wrap :break-word}])
+
+(def motion
+  [[:html {:scroll-behavior :smooth}]
+   (at-media {:prefers-reduced-motion :reduce}
+             ["*,*::before,*::after"
+              {:animation-duration "0.01ms !important"
+               :animation-iteration-count "1 !important"
+               :transition-duration "0.01ms !important"
+               :scroll-behavior "auto !important"}])])
 
 (def all
   [box-sizing
    zero-margin
    list-style-none
-   smooth-scroll
    body
    a-skip-ink
    images
    input-font
-   honor-animation-preferences])
+   wrap-pre
+   motion])
