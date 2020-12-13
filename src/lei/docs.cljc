@@ -36,11 +36,14 @@
 
 (defmethod pattern :default [data]
   (let [{:lei/keys [name description options examples]
-         :keys [doc]}
+         :keys [doc file line]}
         data
         section-name name]
     [:article
      (section-heading :h2 section-name)
+     ;; TODO link to source line in VCS
+     (when (and file line)
+       [:p.text:small [:code (str file ":" line)]])
      [:p (str (or description doc))]
      (when examples
        [:section
