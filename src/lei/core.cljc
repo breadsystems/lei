@@ -67,8 +67,8 @@
                                 [:html :body :div :header :nav :main :footer])]
      [[* {:box-sizing :content-box
           :max-width (ch measure)}]
-      (conj measure-exceptions {:max-width :none})]
-     (wrapper-axiom args))))
+      (conj measure-exceptions {:max-width :none})
+      (wrapper-axiom args)])))
 
 (comment
   (garden/css (axioms))
