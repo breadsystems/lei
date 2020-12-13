@@ -1,28 +1,42 @@
 (ns lei.gen
   (:require
-   [clojure.string :as str]))
+   [clojure.java.io :as io]
+   [clojure.string :as str]
+   [juxt.dirwatch :as watch]))
 
-(defn generate
+(defn generate!
   ([handler]
-   (generate handler {}))
+   (generate! handler {}))
   ([handler opts]
-   (let [sym (symbol handler)
-         {:keys [path]}
-         (merge {:path "dist/index.html"} opts)]
+   (let [{:keys [path]} (merge {:path "dist/index.html"} opts)
+         html (handler)]
+     (spit path html)
+     (println (format "Wrote %d bytes to %s" (count html) path))
+     nil)))
 
-    ;; In a long-running task (i.e. the dev server),
-    ;; we may have previously loaded the handler's ns.
-     (println "Loading" (namespace sym))
-     (require (symbol (namespace sym)) :reload)
+(defn watch! [dir handler opts]
+  (println (format "Watching %s for changes..." dir))
+  (watch/watch-dir (fn [_]
+                     (generate! handler opts))
+                   (io/file dir)))
 
-     (let [;; Dereference and immediately call our handler.
-           html ((deref (resolve sym)))]
-       (spit path html)
-       (println (format "Output %d bytes to %s" (count html) path))))))
+(defn stop-watching! [w]
+  (println "Stopping watch.")
+  (watch/close-watcher w))
 
-(defn -main [handler & args]
+(defn -main [handler-name & args]
   {:pre [(even? (count args))]}
   (let [keywordize (fn [[k v]]
                      [(keyword (str/replace k #"^:" "")) v])
-        opts (into {} (map keywordize (partition 2 args)))]
-    (generate handler opts)))
+        opts (into {} (map keywordize (partition 2 args)))
+        handler-sym (symbol handler-name)]
+
+    (println "Loading" (namespace handler-sym))
+    (require (symbol (namespace handler-sym)))
+
+    (let [handler (deref (resolve handler-sym))]
+      (generate! handler opts)
+      nil)))
+
+(comment
+  (-main "lei.docsite/index-html" "path" "dist/main.html"))
