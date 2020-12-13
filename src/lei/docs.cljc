@@ -88,7 +88,7 @@
      [:div
       ;; Sidebar
       [:nav
-       [:ul
+       [:ul {:role :list}
         (for [{:keys [name]} (or sections [])]
           [:li [:a {:href (anchor name)} name]])]]
       ;; Main Content
