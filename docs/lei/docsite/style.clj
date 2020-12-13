@@ -31,6 +31,8 @@
    (core/sidebar {:space (rem 1)
                   :content-min-width (percent 60)
                   :sidebar-width (ch 20)})
+   ;; Align nav ul with top of main content
+   [:nav [:ul {:margin-top (em 0.5)}]]
 
    ;; Misc
    [:h1 [:&:after {:content "'🌺'"
