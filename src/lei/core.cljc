@@ -102,25 +102,25 @@
     :lei/description "Two or more vertically stacked elements."
     :lei/options
     [{:name :selector
-      :desc "The selector for the top-level Stack element."
+      :description "The selector for the top-level Stack element."
       :default :.stack}
      {:name :space
-      :desc "Vertical spacing, in any unit."
+      :description "Vertical spacing, in any unit."
       :default "2em"}
      {:name :recursive?
-      :desc "Whether to apply spacing (vertical margins) recursively."
+      :description "Whether to apply spacing (vertical margins) recursively."
       :default nil}]
     :lei/examples
     [{:name "Default"
       :form '(lei.core/stack)
-      :desc "You can pass nothing (or an empty map) for a default Stack."}
+      :description "You can pass nothing (or an empty map) for a default Stack."}
      {:name "Custom selector"
       :form '(lei.core/stack {:selector :main})
-      :desc "Specify a custom selector to target the top-level Stack
+      :description "Specify a custom selector to target the top-level Stack
              element. Can be any valid Garden selector."}
      {:name "Recursion"
       :form '(lei.core/stack {:recursive? true})
-      :desc "Makes the Stack recursive, targetting all series of
+      :description "Makes the Stack recursive, targetting all series of
              two or more elements inside rather than only immediate
              children of `selector`."}]}
   stack
@@ -159,17 +159,17 @@
 
     :lei/options
     [{:name :content-min-width
-      :desc "The minimum width, in any unit, for the current element."
+      :description "The minimum width, in any unit, for the current element."
       :required? true}
      {:name :sidebar-width
-      :desc "The width of the sidebar, in any unit. Declared as `flex-basis`
+      :description "The width of the sidebar, in any unit. Declared as `flex-basis`
              in the resulting CSS."
       :required? true}
      {:name :container
-      :desc "The selector for the wrapper element."
+      :description "The selector for the wrapper element."
       :default :.with-sidebar}
      {:name :space
-      :desc "The horizontal space, in any unit, between sidebar and content."
+      :description "The horizontal space, in any unit, between sidebar and content."
       :default "1rem"}]}
   sidebar
   [{:keys [container content-min-width sidebar-width space]}]
@@ -203,13 +203,13 @@
       "Horizontally centered column element."
       :lei/examples
       [{:name "Custom selector"
-        :desc "Pass a custom selector"
+        :description "Pass a custom selector"
         :form '(lei.core/center {:selector :.my-center})}
        {:name "Intrinsic centering"
-        :desc "Optionally center child elements of the centered column."
+        :description "Optionally center child elements of the centered column."
         :form '(lei.core/center {:intrinsic? true})}
        {:name "All options"
-        :desc "Customizing all available options"
+        :description "Customizing all available options"
         :form '(lei.core/center {:selector :.my-center
                                  :max-width (garden.units/ch 50)
                                  :align-text? true
@@ -217,19 +217,19 @@
                                  :intrinsic? true})}]
       :lei/options
       [{:name :selector
-        :desc "The selector to target. Accepts any valid Garden selector."
+        :description "The selector to target. Accepts any valid Garden selector."
         :default :.center}
        {:name :max-width
-        :desc "The max-width to apply on the centered element."
+        :description "The max-width to apply on the centered element."
         :default "80ch"}
        {:name :align-text?
-        :desc "Whether to apply a `text-align: center` rule."
+        :description "Whether to apply a `text-align: center` rule."
         :default "nil"}
        {:name :gutter
-        :desc "The minimum horizontal space on either side of the content."
+        :description "The minimum horizontal space on either side of the content."
         :default "nil"}
        {:name :intrinsic?
-        :desc "Whether to center child elements."
+        :description "Whether to center child elements."
         :default "nil"}]}
     center
     ([]

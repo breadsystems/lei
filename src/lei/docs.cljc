@@ -46,10 +46,10 @@
      (when examples
        [:section
         (section-heading :h3 name "Examples")
-        (for [{:keys [name form desc]} examples]
+        (for [{:keys [name form description]} examples]
           [:div
            (section-heading :h4 section-name "examples" name)
-           (dangerous :div (md/md-to-html-string desc))
+           (dangerous :div (md/md-to-html-string description))
            ;; TODO code formatting
            [:pre (str form)]
            [:p "Result:"]
@@ -57,12 +57,12 @@
      (when options
        [:section
         (section-heading :h3 name "Options")
-        (for [{:keys [name desc default required?]} options]
+        (for [{:keys [name description default required?]} options]
           [:div
            (section-heading :h4 section-name "options" name)
            [:p
             (when required? [:strong "Required. "])
-            (dangerous :div (md/md-to-html-string desc))
+            (dangerous :div (md/md-to-html-string description))
             (when default [:span " Default: " [:code default]])]])])]))
 
 (defn var->map [v]
