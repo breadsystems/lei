@@ -87,11 +87,11 @@
 
     ;; Ratio of 1.5, op of ga/*
     [[:h6 {:font-size (u/em 1)}]
-     [:h5 {:font-size (u/em (* 1 1.5))}]
-     [:h4 {:font-size (u/em (* 1 1.5 1.5))}]
-     [:h3 {:font-size (u/em (* 1 1.5 1.5 1.5))}]
-     [:h2 {:font-size (u/em (* 1 1.5 1.5 1.5 1.5))}]
-     [:h1 {:font-size (u/em (* 1 1.5 1.5 1.5 1.5 1.5))}]]
+     [:h5 {:font-size (u/em (* 1.5))}]
+     [:h4 {:font-size (u/em (* 1.5 1.5))}]
+     [:h3 {:font-size (u/em (* 1.5 1.5 1.5))}]
+     [:h2 {:font-size (u/em (* 1.5 1.5 1.5 1.5))}]
+     [:h1 {:font-size (u/em (* 1.5 1.5 1.5 1.5 1.5))}]]
     [{:ratio 1.5 :op ga/*} :font-size (u/em 1) :h6 :h5 :h4 :h3 :h2 :h1]))
 
 (deftest test-stack
