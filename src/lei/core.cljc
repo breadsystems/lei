@@ -196,3 +196,57 @@
     (garden/css (sidebar {:content-min-width (u/px 500)}))
     (garden/css (sidebar {:sidebar-width (u/px 100)}))
     (garden/css (sidebar {:space (u/rem 1.5)})))
+
+  (defn
+    ^{:lei/name "Center"
+      :lei/description
+      "Horizontally centered column element."
+      :lei/examples
+      [{:name "Custom selector"
+        :desc "Pass a custom selector"
+        :form '(lei.core/center {:selector :.my-center})}
+       {:name "Intrinsic centering"
+        :desc "Optionally center child elements of the centered column."
+        :form '(lei.core/center {:intrinsic? true})}
+       {:name "All options"
+        :desc "Customizing all available options"
+        :form '(lei.core/center {:selector :.my-center
+                                 :max-width (garden.units/ch 50)
+                                 :align-text? true
+                                 :gutter "1.5em"
+                                 :intrinsic? true})}]
+      :lei/options
+      [{:name :selector
+        :desc "The selector to target. Accepts any valid Garden selector."
+        :default :.center}
+       {:name :max-width
+        :desc "The max-width to apply on the centered element."
+        :default "80ch"}
+       {:name :align-text?
+        :desc "Whether to apply a `text-align: center` rule."
+        :default "nil"}
+       {:name :gutter
+        :desc "The minimum horizontal space on either side of the content."
+        :default "nil"}
+       {:name :intrinsic?
+        :desc "Whether to center child elements."
+        :default "nil"}]}
+    center
+    ([]
+     (center {}))
+    ([{:keys [selector max-width align-text? gutter intrinsic?]}]
+     (let [selector (or selector :.center)
+           max-width (or max-width (ch 80))
+           text-rules (when align-text? {:text-align :center})
+           padding-rules (when gutter {:padding-left gutter
+                                       :padding-right gutter})
+           intrinsic-rules (when intrinsic? {:display :flex
+                                             :flex-direction :column
+                                             :align-items :center})]
+       [[selector (merge {:box-sizing :content-box
+                          :margin-left :auto
+                          :margin-right :auto
+                          :max-width max-width}
+                         text-rules
+                         padding-rules
+                         intrinsic-rules)]])))

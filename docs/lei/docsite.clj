@@ -16,4 +16,5 @@
                [{:name "Intro"
                  :html-content (docs/path->html "md/intro.md")}
                 (docs/var->map #'core/stack)
-                (docs/var->map #'core/sidebar)]})))
+                (docs/var->map #'core/sidebar)
+                (docs/var->map #'core/center)]})))

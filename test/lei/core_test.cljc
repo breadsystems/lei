@@ -192,3 +192,79 @@
                    :content-min-width (u/percent 60)
                    :sidebar-width (u/ch 10)
                    :space (u/rem 2)})))
+
+(deftest test-center
+  (are [x y] (= (str/split (garden/css x) #"\n")
+                (str/split (garden/css y) #"\n"))
+
+    ;; Using defaults
+    [[:.center {:box-sizing :content-box
+                :margin-left :auto
+                :margin-right :auto
+                :max-width (u/ch 80)}]]
+    (core/center)
+
+    ;; Using defaults, passing an empty map
+    [[:.center {:box-sizing :content-box
+                :margin-left :auto
+                :margin-right :auto
+                :max-width (u/ch 80)}]]
+    (core/center {})
+
+    ;; Using a custom max-width
+    [[:.center {:box-sizing :content-box
+                :margin-left :auto
+                :margin-right :auto
+                :max-width (u/ch 25)}]]
+    (core/center {:max-width (u/ch 25)})
+
+    ;; Using a custom selector
+    [[:.my-center {:box-sizing :content-box
+                   :margin-left :auto
+                   :margin-right :auto
+                   :max-width (u/ch 80)}]]
+    (core/center {:selector :.my-center})
+
+    ;; With gutters
+    [[:.center {:box-sizing :content-box
+                :margin-left :auto
+                :margin-right :auto
+                :max-width (u/ch 80)
+                :padding-left (u/em 1)
+                :padding-right (u/em 1)}]]
+    (core/center {:gutter (u/em 1)})
+
+    ;; Aligning text
+    [[:.center {:box-sizing :content-box
+                :margin-left :auto
+                :margin-right :auto
+                :max-width (u/ch 80)
+                :text-align :center}]]
+    (core/center {:align-text? true})
+
+    ;; With intrinsic centering
+    [[:.center {:box-sizing :content-box
+                :margin-left :auto
+                :margin-right :auto
+                :max-width (u/ch 80)
+                :display :flex
+                :flex-direction :column
+                :align-items :center}]]
+    (core/center {:intrinsic? true})
+
+    ;; Composing all options
+    [[:.custom-center {:box-sizing :content-box
+                       :margin-left :auto
+                       :margin-right :auto
+                       :max-width (u/ch 50)
+                       :text-align :center
+                       :padding-left (u/em 1.5)
+                       :padding-right (u/em 1.5)
+                       :display :flex
+                       :flex-direction :column
+                       :align-items :center}]]
+    (core/center {:selector :.custom-center
+                  :max-width (u/ch 50)
+                  :align-text? true
+                  :gutter (u/em 1.5)
+                  :intrinsic? true})))
