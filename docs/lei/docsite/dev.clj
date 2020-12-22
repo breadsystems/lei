@@ -6,8 +6,8 @@
    [org.httpkit.server :as http]
    [ring.middleware.reload :refer [wrap-reload]]))
 
-(defonce server (atom nil))
-(defonce watchers (atom #{}))
+(defonce ^:private server (atom nil))
+(defonce ^:private watchers (atom #{}))
 
 ;; Really, really dumb static file server
 (defn- app [{:keys [uri]}]
