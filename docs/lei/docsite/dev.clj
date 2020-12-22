@@ -7,7 +7,7 @@
    [ring.middleware.reload :refer [wrap-reload]]))
 
 (defonce server (atom nil))
-(defonce watcher (atom nil))
+(defonce watchers (atom #{}))
 
 ;; Really, really dumb static file server
 (defn- app [{:keys [uri]}]
@@ -23,10 +23,14 @@
   (when-not (.exists (io/file "dev/index.html"))
     (spit "dev/index.html"
           "No output yet! Make a change to see your generated docs."))
-  (reset! watcher (gen/watch!
-                   "docs"
-                   d/index-html
-                   {:path "dev/index.html"}))
+  (swap! watchers conj (gen/watch!
+                        "src"
+                        d/index-html
+                        {:path "dev/index.html"}))
+  (swap! watchers conj (gen/watch!
+                        "docs"
+                        d/index-html
+                        {:path "dev/index.html"}))
   (println "🌺 Serving from /dev at http://localhost:8001")
   (reset! server
           (http/run-server
@@ -38,9 +42,10 @@
   (when-not (nil? @server)
     (@server :timeout 100)
     (reset! server nil))
-  (when-not (nil? @watcher)
-    (gen/stop-watching! @watcher)
-    (reset! watcher nil)))
+  (when (seq @watchers)
+    (doall (for [w @watchers]
+             (gen/stop-watching! w)))
+    (reset! watchers #{})))
 
 (defn- running? []
   (boolean @server))
