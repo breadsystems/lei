@@ -18,11 +18,12 @@
                           (.getMessage ex)))))
      nil)))
 
-(defn watch! [dir handler opts]
-  (println (format "Watching %s for changes..." dir))
-  (watch/watch-dir (fn [_]
-                     (generate! handler opts))
-                   (io/file dir)))
+(defn watch! [dirs handler opts]
+  (println (format "Watching %s for changes..." (str/join ", " dirs)))
+  (for [dir dirs]
+    (watch/watch-dir (fn [_]
+                       (generate! handler opts))
+                     (io/file dir))))
 
 (defn stop-watching! [w]
   (println "Stopping watch.")

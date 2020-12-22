@@ -24,15 +24,10 @@
     (spit "dev/index.html"
           "No output yet! Make a change to see your generated docs."))
   (swap! watchers conj (gen/watch!
-                        "src"
-                        (fn []
-                          (require 'lei.core :reload)
-                          (d/index-html))
-                        {:path "dev/index.html"}))
-  (swap! watchers conj (gen/watch!
-                        "docs"
+                        #{"src" "docs"}
                         (fn []
                           (require 'lei.docsite :reload)
+                          (require 'lei.core :reload)
                           (d/index-html))
                         {:path "dev/index.html"}))
   (println "🌺 Serving from /dev at http://localhost:8001")
