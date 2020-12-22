@@ -7,7 +7,7 @@
    [ring.middleware.reload :refer [wrap-reload]]))
 
 (defonce ^:private server (atom nil))
-(defonce ^:private watchers (atom #{}))
+(defonce ^:private watchers (atom nil))
 
 ;; Really, really dumb static file server
 (defn- app [{:keys [uri]}]
@@ -23,7 +23,7 @@
   (when-not (.exists (io/file "dev/index.html"))
     (spit "dev/index.html"
           "No output yet! Make a change to see your generated docs."))
-  (swap! watchers conj (gen/watch!
+  (reset! watchers (gen/watch!
                         #{"src" "docs"}
                         (fn []
                           (require 'lei.docsite :reload)
@@ -44,7 +44,7 @@
   (when (seq @watchers)
     (doall (for [w @watchers]
              (gen/stop-watching! w)))
-    (reset! watchers #{})))
+    (reset! watchers nil)))
 
 (defn- running? []
   (boolean @server))

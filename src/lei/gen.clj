@@ -1,8 +1,23 @@
 (ns lei.gen
   (:require
+   [clojure.core.async :refer [alts! chan close! go go-loop timeout <! >!]]
    [clojure.java.io :as io]
    [clojure.string :as str]
    [juxt.dirwatch :as watch]))
+
+(defn- debounce [in ms]
+  (let [out (chan)]
+    (go-loop [last-val nil]
+      (let [val   (if (nil? last-val) (<! in) last-val)
+            timer (timeout ms)
+            [new-val ch] (alts! [in timer])]
+        (condp = ch
+          timer (do (when-not
+                     (>! out val)
+                      (close! in))
+                    (recur nil))
+          in (when new-val (recur new-val)))))
+    out))
 
 (defn generate!
   ([handler]
@@ -20,14 +35,21 @@
 
 (defn watch! [dirs handler opts]
   (println (format "Watching %s for changes..." (str/join ", " dirs)))
-  (for [dir dirs]
-    (watch/watch-dir (fn [_]
-                       (generate! handler opts))
-                     (io/file dir))))
+  (let [ch (chan)
+        debounced (debounce ch (or (:debounce-ms opts) 100))]
+    (go-loop []
+      (let [args (<! debounced)]
+        (apply generate! args)
+        (recur)))
+    (for [dir dirs]
+      (watch/watch-dir (fn [_]
+                         (go (>! ch [handler opts])))
+                       (io/file dir)))))
 
-(defn stop-watching! [w]
+(defn stop-watching! [watchers]
   (println "Stopping watch.")
-  (watch/close-watcher w))
+  (for [w watchers]
+    (watch/close-watcher w)))
 
 (defn -main [handler-name & args]
   {:pre [(even? (count args))]}
