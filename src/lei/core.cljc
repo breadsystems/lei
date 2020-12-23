@@ -213,7 +213,7 @@
         :form '(lei.core/center {:selector :.my-center
                                  :max-width (garden.units/ch 50)
                                  :align-text? true
-                                 :gutter "1.5em"
+                                 :gutter (garden.units/em 1.5)
                                  :intrinsic? true})}]
       :lei/options
       [{:name :selector
