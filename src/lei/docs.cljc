@@ -2,8 +2,23 @@
   (:require
    [clojure.string :as str]
    [clojure.java.io :as io]
+   [clojure.walk :as walk]
    [garden.core :as garden]
+   [garden.selectors]
    [markdown.core :as md]))
+
+(defprotocol GardenRenderable
+  (as-garden [this]))
+
+(extend-protocol GardenRenderable
+  java.lang.Object
+  (as-garden [this]
+    this)
+
+  garden.types.CSSUnit
+  (as-garden [this]
+    (list (symbol (str "garden.units/" (symbol (.-unit this))))
+          (.-magnitude this))))
 
 (defn path->html [path]
   (-> (io/resource path) slurp md/md-to-html-string))
@@ -30,6 +45,17 @@
    [:a {:name (apply slug sections)}]
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
+(defmulti snippet :lei/renderer)
+
+(defmethod snippet :default [form]
+  ;; TODO code formatting
+  [:pre (str form)])
+
+(defmulti result :lei/renderer)
+
+(defmethod result :default [form]
+  [:pre (str (walk/postwalk as-garden (eval form)))])
+
 (defmulti pattern :lei/renderer)
 
 (defmethod pattern :default [data]
@@ -50,10 +76,9 @@
           [:div
            (section-heading :h4 section-name "examples" name)
            (dangerous :div (md/md-to-html-string description))
-           ;; TODO code formatting
-           [:pre (str form)]
+           (snippet form)
            [:p "Result:"]
-           [:pre (str (eval form))]])])
+           (result form)])])
      (when options
        [:section
         (section-heading :h3 name "Options")
