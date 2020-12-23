@@ -42,8 +42,7 @@
     (@server :timeout 100)
     (reset! server nil))
   (when (seq @watchers)
-    (doall (for [w @watchers]
-             (gen/stop-watching! w)))
+    (gen/stop-watching! @watchers)
     (reset! watchers nil)))
 
 (defn- running? []
