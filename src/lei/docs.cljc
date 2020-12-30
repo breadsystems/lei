@@ -1,15 +1,12 @@
 (ns lei.docs
   (:require
-   [cljfmt.core :as fmt]
    [clojure.string :as str]
    [clojure.java.io :as io]
    [clojure.walk :as walk]
    [garden.core :as garden]
    [garden.selectors]
-   [markdown.core :as md]))
-
-(def ^:dynamic *cljfmt-options*
-  {:split-keypairs-over-multiple-lines? true})
+   [markdown.core :as md]
+   [zprint.core :as zp]))
 
 (defprotocol GardenRenderable
   (as-garden [this]))
@@ -54,21 +51,23 @@
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
 (defmulti format-clj (fn [opts _form]
-                                (:format-clj-options opts)))
+                                (or (:formatter opts) :zprint)))
 
-(defmethod format-clj :default [opts form]
-  (fmt/reformat-string (str form) opts))
+(defmethod format-clj :zprint [_opts form]
+  ;; `:color? true` prints shell control chars, which we don't want
+  ;; in the browser.
+  (zp/czprint-str form {:color? false}))
 
 (defmulti snippet :lei/renderer)
 
 (defmethod snippet :default [form]
-  [:pre (format-clj *cljfmt-options* form)])
+  [:pre (format-clj {} form)])
 
 (defmulti garden-result :lei/renderer)
 
 (defmethod garden-result :default [form]
   (let [garden-form (walk/postwalk as-garden (eval form))]
-    [:pre (format-clj *cljfmt-options* garden-form)]))
+    [:pre (format-clj {} garden-form)]))
 
 (defmulti pattern :lei/renderer)
 
