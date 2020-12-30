@@ -51,9 +51,9 @@
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
 (defmulti format-clj (fn [opts _form]
-                                (or (:formatter opts) :zprint)))
+                                (:formatter opts)))
 
-(defmethod format-clj :zprint [_opts form]
+(defmethod format-clj :default [_opts form]
   ;; `:color? true` prints shell control chars, which we don't want
   ;; in the browser.
   (zp/czprint-str form {:color? false}))
