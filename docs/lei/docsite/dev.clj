@@ -26,6 +26,7 @@
   (reset! watchers (gen/watch!
                         #{"src" "docs"}
                         (fn []
+                          (require 'lei.docs :reload)
                           (require 'lei.docsite :reload)
                           (require 'lei.core :reload)
                           (d/index-html))
