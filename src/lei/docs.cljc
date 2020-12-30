@@ -50,24 +50,29 @@
    [:a {:name (apply slug sections)}]
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
+(def ^:dynamic *format-opts*
+  {:measure 70
+   :zprint-opts {;; `:color? true` prints shell control chars,
+                 ;; which we don't want in the browser.
+                 :color? false}})
+
 (defmulti format-clj (fn [opts _form]
                                 (:formatter opts)))
 
-(defmethod format-clj :default [_opts form]
-  ;; `:color? true` prints shell control chars, which we don't want
-  ;; in the browser.
-  (zp/czprint-str form {:color? false}))
+(defmethod format-clj :default [format-opts form]
+  (let [{:keys [measure zprint-opts]} format-opts]
+    (zp/czprint-str form measure zprint-opts)))
 
 (defmulti snippet :lei/renderer)
 
 (defmethod snippet :default [form]
-  [:pre (format-clj {} form)])
+  [:pre (format-clj *format-opts* form)])
 
 (defmulti garden-result :lei/renderer)
 
 (defmethod garden-result :default [form]
   (let [garden-form (walk/postwalk as-garden (eval form))]
-    [:pre (format-clj {} garden-form)]))
+    [:pre (format-clj *format-opts* garden-form)]))
 
 (defmulti pattern :lei/renderer)
 
