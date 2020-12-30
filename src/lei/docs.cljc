@@ -63,18 +63,18 @@
   (let [{:keys [measure zprint-opts]} format-opts]
     (zp/czprint-str form measure zprint-opts)))
 
-(defmulti snippet :lei/renderer)
+(defmulti snippet :renderer)
 
-(defmethod snippet :default [form]
+(defmethod snippet :default [{:keys [form]}]
   [:pre (format-clj *format-opts* form)])
 
-(defmulti garden-result :lei/renderer)
+(defmulti garden-result :renderer)
 
-(defmethod garden-result :default [form]
+(defmethod garden-result :default [{:keys [form]}]
   (let [garden-form (walk/postwalk as-garden (eval form))]
     [:pre (format-clj *format-opts* garden-form)]))
 
-(defmulti pattern :lei/renderer)
+(defmulti pattern :renderer)
 
 (defmethod pattern :default [data]
   (let [{:lei/keys [name description options examples]
@@ -90,13 +90,13 @@
      (when examples
        [:section
         (section-heading :h3 name "Examples")
-        (for [{:keys [name form description]} examples]
+        (for [{:keys [name description] :as example} examples]
           [:div
            (section-heading :h4 section-name "examples" name)
            (dangerous :div (md/md-to-html-string description))
-           (snippet form)
+           (snippet example)
            [:p "Result:"]
-           (garden-result form)])])
+           (garden-result example)])])
      (when options
        [:section
         (section-heading :h3 name "Options")
@@ -113,7 +113,7 @@
     {:name (:lei/name m)
      :content (pattern m)}))
 
-(defmulti page :lei/renderer)
+(defmulti page :renderer)
 
 (defmethod page :default [{:keys [title
                                   description
