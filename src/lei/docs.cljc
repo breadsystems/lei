@@ -1,11 +1,15 @@
 (ns lei.docs
   (:require
+   [cljfmt.core :as fmt]
    [clojure.string :as str]
    [clojure.java.io :as io]
    [clojure.walk :as walk]
    [garden.core :as garden]
    [garden.selectors]
    [markdown.core :as md]))
+
+(def ^:dynamic *cljfmt-options*
+  {:split-keypairs-over-multiple-lines? true})
 
 (defprotocol GardenRenderable
   (as-garden [this]))
@@ -14,6 +18,10 @@
   java.lang.Object
   (as-garden [this]
     this)
+
+  garden.selectors.CSSSelector
+  (as-garden [this]
+    (str (symbol (.-selector this))))
 
   garden.types.CSSUnit
   (as-garden [this]
@@ -45,16 +53,22 @@
    [:a {:name (apply slug sections)}]
    [:a {:href (apply anchor sections)} [tag (last sections)]]])
 
+(defmulti format-clj (fn [opts _form]
+                                (:format-clj-options opts)))
+
+(defmethod format-clj :default [opts form]
+  (fmt/reformat-string (str form) opts))
+
 (defmulti snippet :lei/renderer)
 
 (defmethod snippet :default [form]
-  ;; TODO code formatting
-  [:pre (str form)])
+  [:pre (format-clj *cljfmt-options* form)])
 
-(defmulti result :lei/renderer)
+(defmulti garden-result :lei/renderer)
 
-(defmethod result :default [form]
-  [:pre (str (walk/postwalk as-garden (eval form)))])
+(defmethod garden-result :default [form]
+  (let [garden-form (walk/postwalk as-garden (eval form))]
+    [:pre (format-clj *cljfmt-options* garden-form)]))
 
 (defmulti pattern :lei/renderer)
 
@@ -78,7 +92,7 @@
            (dangerous :div (md/md-to-html-string description))
            (snippet form)
            [:p "Result:"]
-           (result form)])])
+           (garden-result form)])])
      (when options
        [:section
         (section-heading :h3 name "Options")
