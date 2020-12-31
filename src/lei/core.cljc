@@ -109,7 +109,7 @@
       :default "2em"}
      {:name :recursive?
       :description "Whether to apply spacing (vertical margins) recursively."
-      :default nil}]
+      :default "nil"}]
     :lei/examples
     [{:name "Default"
       :form '(lei.core/stack)

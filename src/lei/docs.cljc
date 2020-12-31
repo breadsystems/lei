@@ -68,7 +68,9 @@
                                    selected-label-styles]}]
   (let [selected-label-styles (merge {:text-decoration :underline}
                                      selected-label-styles)]
-    [[:.example-result {:margin-top 0}
+    [[:.example-result
+      [:pre :nav {:margin-bottom 0
+                  :margin-top 0}]
       [:nav {:display :flex
              :justify-content :space-evenly
              :border "1px solid black"}
@@ -125,18 +127,17 @@
 
 (defmulti example :renderer)
 (defmethod example :default [ex]
-  [:div
+  [:div.example-result {:data-tabs 2}
    (clj-snippet ex)
-   [:div.example-result {:data-tabs 2}
-    [:nav
-     [:label {:data-nav-tab "css"
-                      :for "tab--css"} "CSS Result"]
-     [:label {:data-nav-tab "garden"
-                      :for "tab--garden"} "Garden Result"]]
-    [:div {:data-tab "garden"}
-     (garden-result ex)]
-    [:div {:data-tab "css"}
-     (css-result ex)]]])
+   [:nav
+    [:label {:data-nav-tab "css"
+             :for "tab--css"} "CSS Result"]
+    [:label {:data-nav-tab "garden"
+             :for "tab--garden"} "Garden Result"]]
+   [:div {:data-tab "garden"}
+    (garden-result ex)]
+   [:div {:data-tab "css"}
+    (css-result ex)]])
 
 (defmulti pattern :renderer)
 (defmethod pattern :default [data]
@@ -144,7 +145,7 @@
          :keys [doc file line]}
         data
         section-name name]
-    [:article
+    [:article.stack
      (section-heading :h2 section-name)
      ;; TODO link to source line in VCS
      (when (and file line)
@@ -178,7 +179,6 @@
 (defmethod page :default [{:keys [title
                                   head-html
                                   description
-                                  styles
                                   heading
                                   subheading
                                   sections]}]
@@ -191,12 +191,20 @@
               :content metadesc}])
     [:meta {:name "viewport"
             :content "width=device-width, initial-scale=1"}]
-    (inline-style (garden/css styles))
     head-html]
    [:body
     [:header
      [:h1 (or heading title)]
      (when subheading [:h2 subheading])]
+    [:input {:type :radio
+             :name :tab-toggle
+             :value "css"
+             :id "tab--css"
+             :checked true}]
+    [:input {:type :radio
+             :name :tab-toggle
+             :value "garden"
+             :id "tab--garden"}]
     [:div.with-sidebar
      [:div
       ;; Sidebar
@@ -205,16 +213,7 @@
         (for [{:keys [name]} (or sections [])]
           [:li [:a {:href (anchor name)} name]])]]
       ;; Main Content
-      [:main.stack {:role :main}
-       [:input {:type :radio
-                :name :tab-toggle
-                :value "css"
-                :id "tab--css"
-                :checked true}]
-       [:input {:type :radio
-                :name :tab-toggle
-                :value "garden"
-                :id "tab--garden"}]
+      [:main.big-stack {:role :main}
        (for [{:keys [name content html-content]} (or sections [])]
          [:div
           (if html-content

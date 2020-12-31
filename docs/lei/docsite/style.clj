@@ -4,7 +4,7 @@
    [garden.def :as ds]
    [garden.selectors :as s]
    [garden.stylesheet :as gs :refer [at-font-face]]
-   [garden.units :as u :refer [ch percent px em rem]]
+   [garden.units :as u :refer [ch percent px em rem vh vw]]
    [lei.core :as core]
    [lei.docs :as docs]
    [lei.resets :as resets]
@@ -35,10 +35,20 @@
    (core/modular-scale :font-size (em 3.5) :h1 :h2 :h3 :h4 :h5)
 
    ;; General layout stuff
-   (core/stack {:recursive? true})
+   (core/stack {:selector :.big-stack
+                :space (em 6)})
+   (core/stack {:selector :.stack
+                :recursive? true
+                :spare (em 1.5)})
    (core/sidebar {:space (rem 1)
                   :content-min-width (percent 60)
                   :sidebar-width (ch 30)})
+   [:header {:height (vh 100)}
+    [:h1 {:margin-top (vh 15)
+          :font-size (rem 12)}]
+    [:h2 {:font-size (rem 5)}]]
+   [:h2 :h3 :h4 :h5 {:margin-top 0
+                     :margin-bottom 0}]
    ;; Align nav ul with top of main content
    [:nav [:ul {:margin-top (em 0.5)}]]
 
@@ -51,14 +61,18 @@
    ;; Fonts and colors
    [:body {:background-color translucent-rose
            :font-size (px 18)
+           :margin-top 0
+           :padding-top 0
            :padding-left (rem 2)
            :padding-right (rem 2)
            :padding-bottom (rem 10)}]
-   [* {:font-family util/system-sans}]
+   [* {:font-family (cons "Heebo" util/system-sans)}]
+   [:h1 :h2 {:font-family "Playfair Display, sans-serif"}]
    [:h1 :h2 :h3 :h4 :h5 :h6 {:color green}]
-   [:header [* {:text-align :center
-                :font-family util/system-serif
-                :font-style :italic}]]
+   [:header
+    [* {:text-align :center
+        :font-family "Playfair Display, sans-serif"
+        :font-weight 700}]]
    [:a {:text-decoration :none
         :font-weight 700
         :color green}]

@@ -1,5 +1,6 @@
 (ns lei.docsite
   (:require
+   [garden.core :as garden]
    [lei.docsite.style :as style]
    [lei.docs :as docs]
    [lei.core :as core]
@@ -14,6 +15,14 @@
                 :styles style/screen
                 :head-html
                 [:<>
+                 [:link {:rel :preconnect
+                         :href "https://unpkg.com"}]
+                 [:link {:rel :preconnect
+                         :href "https://fonts.gstatic.com"}]
+                 [:link {:rel :stylesheet
+                         :href "https://fonts.googleapis.com/css2?family=Heebo&family=Playfair+Display:ital,wght@1,700&display=swap"}]
+                 (docs/inline-style
+                  (garden/css style/screen))
                  (docs/inline-style
                   (slurp "docs/highlight.js/styles/tomorrow-night-eighties.css"))
                  (docs/inline-script
