@@ -15,6 +15,8 @@
 (ds/defcssfn url)
 
 (def translucent-rose "#ffe9edbf")
+(def dark-purple "#781757")
+(def light-grey "#e9e9e9")
 (def green "rgb(7, 128, 7)")
 
 (defutil text-align:center)
@@ -68,10 +70,11 @@
      :selected-label-styles {:background :pink
                              :text-decoration-color :darkmagenta
                              :text-decoration-style :dotted}})
-   ["code:not([class^='lang-'])" {:background "#e9e9e9"
+   ["code:not([class^='lang-'])" {:background light-grey
                                   :padding "0.1em 0.3em"
                                   :border "1px solid #e6c7c7"
-                                  :border-radius (em 0.2)}]
+                                  :border-radius (em 0.2)
+                                  :color dark-purple}]
    [:code
     [:& * {:min-width (ch 70)
            :font-family ["FiraCode" "monospace"]}]]
