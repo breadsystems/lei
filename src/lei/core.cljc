@@ -109,6 +109,9 @@
       :default "2em"}
      {:name :recursive?
       :description "Whether to apply spacing (vertical margins) recursively."
+      :default "nil"}
+     {:name :exceptions
+      :descriptions "Overrides to the vertical margin rules of stack descendants."
       :default "nil"}]
     :lei/examples
     [{:name "Default"
@@ -122,21 +125,24 @@
       :form '(lei.core/stack {:recursive? true})
       :description "Makes the Stack recursive, targetting all series of
              two or more elements inside rather than only immediate
-             children of `selector`."}]}
+             children of `selector`."}
+     {:name "Exceptions"
+      :form '(lei.core/stack {:exception [:.stack-exception
+                                          {:margin-top (garden.units/rem 3)}]})
+      :description "Nests the given exception rule(s) under the top-level
+                    stack rules."}]}
   stack
   ([]
    (stack {}))
-  ([{:keys [selector space recursive? exception exception-bottom?]}]
+  ([{:keys [selector space recursive? exception]}]
    (let [selector (or selector :.stack)
          space (or space (rem 1.5))
-         stack-rule [selector {:display :flex
+         stack-rules [selector {:display :flex
                                :flex-direction :column
-                               :justify-content :flex-start}
-                     (when exception
-                       [exception
-                        (when exception-bottom?
-                          (s/+ exception *))
-                        {:margin-top space}])]
+                               :justify-content :flex-start}]
+         stack-rules (if exception
+                      (conj stack-rules exception)
+                      stack-rules)
          ;; Nested rules are the same irrespective of recursion;
          ;; only the selectors differ.
          nest (fn [sel rules]
@@ -148,7 +154,7 @@
          child-rule (nest * {:margin-top 0
                              :margin-bottom 0})
          grandchild-rule (nest (s/+ * *) {:margin-top space})]
-     [stack-rule child-rule grandchild-rule])))
+     [stack-rules child-rule grandchild-rule])))
 
 (comment
   (garden/css (stack))

@@ -147,34 +147,11 @@
     [[:.stack {:display :flex
                :flex-direction :column
                :justify-content :flex-start}
-      [:.stack-exception {:margin-top (u/rem 1.5)}]]
-     [(sel/> :.stack :*) {:margin-top 0
-                          :margin-bottom 0}]
-     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
-    (core/stack {:exception :.stack-exception})
-
-    ;; Exceptions should use the same spacing
-    [[:.stack {:display :flex
-               :flex-direction :column
-               :justify-content :flex-start}
       [:.stack-exception {:margin-top (u/rem 3)}]]
      [(sel/> :.stack :*) {:margin-top 0
                           :margin-bottom 0}]
-     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 3)}]]
-    (core/stack {:exception :.stack-exception
-                 :space (u/rem 3)})
-
-    ;; Overriding space below exceptions
-    [[:.stack {:display :flex
-               :flex-direction :column
-               :justify-content :flex-start}
-      [:.stack-exception (sel/+ :.stack-exception :*)
-       {:margin-top (u/rem 1.5)}]]
-     [(sel/> :.stack :*) {:margin-top 0
-                          :margin-bottom 0}]
      [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
-    (core/stack {:exception :.stack-exception
-                 :exception-bottom? true})))
+    (core/stack {:exception [:.stack-exception {:margin-top (u/rem 3)}]})))
 
 (comment
   (garden/css [:.x [(sel/+ :* :*) {:foo :bar}]])
