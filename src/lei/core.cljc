@@ -126,12 +126,17 @@
   stack
   ([]
    (stack {}))
-  ([{:keys [selector space recursive?]}]
+  ([{:keys [selector space recursive? exception exception-bottom?]}]
    (let [selector (or selector :.stack)
          space (or space (rem 1.5))
          stack-rule [selector {:display :flex
                                :flex-direction :column
-                               :justify-content :flex-start}]
+                               :justify-content :flex-start}
+                     (when exception
+                       [exception
+                        (when exception-bottom?
+                          (s/+ exception *))
+                        {:margin-top space}])]
          ;; Nested rules are the same irrespective of recursion;
          ;; only the selectors differ.
          nest (fn [sel rules]

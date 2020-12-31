@@ -141,7 +141,40 @@
       [:* {:margin-top 0
            :margin-bottom 0}]
       [(sel/+ :* :*) {:margin-top (u/rem 1.5)}]]]
-    (core/stack {:recursive? true})))
+    (core/stack {:recursive? true})
+
+    ;; Define a stack exception
+    [[:.stack {:display :flex
+               :flex-direction :column
+               :justify-content :flex-start}
+      [:.stack-exception {:margin-top (u/rem 1.5)}]]
+     [(sel/> :.stack :*) {:margin-top 0
+                          :margin-bottom 0}]
+     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
+    (core/stack {:exception :.stack-exception})
+
+    ;; Exceptions should use the same spacing
+    [[:.stack {:display :flex
+               :flex-direction :column
+               :justify-content :flex-start}
+      [:.stack-exception {:margin-top (u/rem 3)}]]
+     [(sel/> :.stack :*) {:margin-top 0
+                          :margin-bottom 0}]
+     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 3)}]]
+    (core/stack {:exception :.stack-exception
+                 :space (u/rem 3)})
+
+    ;; Overriding space below exceptions
+    [[:.stack {:display :flex
+               :flex-direction :column
+               :justify-content :flex-start}
+      [:.stack-exception (sel/+ :.stack-exception :*)
+       {:margin-top (u/rem 1.5)}]]
+     [(sel/> :.stack :*) {:margin-top 0
+                          :margin-bottom 0}]
+     [(sel/> :.stack (sel/+ :* :*)) {:margin-top (u/rem 1.5)}]]
+    (core/stack {:exception :.stack-exception
+                 :exception-bottom? true})))
 
 (comment
   (garden/css [:.x [(sel/+ :* :*) {:foo :bar}]])
