@@ -4,7 +4,8 @@
    [clojure.java.io :as io]
    [clojure.walk :as walk]
    [garden.core :as garden]
-   [garden.selectors]
+   [garden.selectors :as s]
+   [garden.units :refer [em percent]]
    [markdown.core :as md]
    [zprint.core :as zp]))
 
@@ -60,7 +61,36 @@
   {:measure 70
    :zprint-opts {;; `:color? true` prints shell control chars,
                  ;; which we don't want in the browser.
-                 :color? false}})
+                 :color? false
+                 :map {:comma? false}}})
+
+(defn code-example-styles [{:keys [default-label-styles
+                                   selected-label-styles]}]
+  (let [selected-label-styles (merge {:text-decoration :underline}
+                                     selected-label-styles)]
+    [[:.example-result {:margin-top 0}
+      [:nav {:display :flex
+             :justify-content :space-evenly
+             :border "1px solid black"}
+       [:label (merge {:margin-top 0
+                       :flex-basis (percent 50)
+                       :padding (em 0.5)
+                       :cursor :pointer}
+                      default-label-styles)]
+       [(s/+ :label :label) {:border-left "1px solid black"}]]
+      [(s/attr :data-tab) {:margin-top 0
+                           :display :none}]]
+     [(s/attr :name=tab-toggle) {:display :none}]
+     ;; Selected labels
+     ["[name=tab-toggle][value=css]:checked ~ * [for=tab--css]"
+      selected-label-styles]
+     ["[name=tab-toggle][value=garden]:checked ~ * [for=tab--garden]"
+      selected-label-styles]
+     ;; Selected code blocks
+     ["[name=tab-toggle][value=css]:checked ~ * [data-tab=css]"
+      {:display :block}]
+     ["[name=tab-toggle][value=garden]:checked ~ * [data-tab=garden]"
+      {:display :block}]]))
 
 ;; TODO aliases in snippets
 
@@ -97,8 +127,12 @@
 (defmethod example :default [ex]
   [:div
    (clj-snippet ex)
-   [:p "Result:"]
-   [:div {:data-tabs 2}
+   [:div.example-result {:data-tabs 2}
+    [:nav
+     [:label {:data-nav-tab "css"
+                      :for "tab--css"} "CSS Result"]
+     [:label {:data-nav-tab "garden"
+                      :for "tab--garden"} "Garden Result"]]
     [:div {:data-tab "garden"}
      (garden-result ex)]
     [:div {:data-tab "css"}
@@ -172,6 +206,15 @@
           [:li [:a {:href (anchor name)} name]])]]
       ;; Main Content
       [:main.stack {:role :main}
+       [:input {:type :radio
+                :name :tab-toggle
+                :value "css"
+                :id "tab--css"
+                :checked true}]
+       [:input {:type :radio
+                :name :tab-toggle
+                :value "garden"
+                :id "tab--garden"}]
        (for [{:keys [name content html-content]} (or sections [])]
          [:div
           (if html-content

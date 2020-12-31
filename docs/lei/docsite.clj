@@ -18,7 +18,9 @@
                   (slurp "docs/highlight.js/styles/tomorrow-night-eighties.css"))
                  (docs/inline-script
                   (slurp "docs/highlight.js/highlight.pack.js"))
-                 (docs/inline-script "hljs.initHighlightingOnLoad();")]
+                 (docs/inline-script "hljs.initHighlightingOnLoad();")
+                 (docs/inline-script
+                  (slurp "docs/js/lei.js"))]
                 :heading "Lei"
                 :subheading "A design system library"
                 :sections

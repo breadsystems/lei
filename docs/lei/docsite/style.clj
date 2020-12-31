@@ -6,6 +6,7 @@
    [garden.stylesheet :as gs :refer [at-font-face]]
    [garden.units :as u :refer [ch percent px em rem]]
    [lei.core :as core]
+   [lei.docs :as docs]
    [lei.resets :as resets]
    [lei.util :as util :refer [defutil]]))
 
@@ -49,9 +50,9 @@
    [:body {:background-color translucent-rose
            :font-size (px 18)
            :padding-left (rem 2)
-           :padding-right (rem 2)}]
+           :padding-right (rem 2)
+           :padding-bottom (rem 10)}]
    [* {:font-family util/system-sans}]
-   [:code [:& * {:font-family ["FiraCode" "monospace"]}]]
    [:h1 :h2 :h3 :h4 :h5 :h6 {:color green}]
    [:header [* {:text-align :center
                 :font-family util/system-serif
@@ -59,6 +60,15 @@
    [:a {:text-decoration :none
         :font-weight 700
         :color green}]
+
+   ;; Code
+   (docs/code-example-styles
+    {:default-label-styles {:color :black
+                            :font-weight 700}
+     :selected-label-styles {:background :pink
+                             :text-decoration-color :darkmagenta
+                             :text-decoration-style :dotted}})
+   [:code [:& * {:font-family ["FiraCode" "monospace"]}]]
 
    ;; Utility classes
    text-align:center
