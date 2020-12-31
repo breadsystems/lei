@@ -33,7 +33,7 @@
   (let [[attrs html] (if (map? attrs )
                        [attrs html]
                        [{} attrs])]
-    [tag (merge attrs {:dangerouslySetInnerHTML {:__html html}})]))
+    [tag (merge attrs {:dangerouslySetInnerHTML {:__html (or html "")}})]))
 
 (defn inline-style [css]
   (dangerous :style css))
