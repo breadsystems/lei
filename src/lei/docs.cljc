@@ -220,5 +220,5 @@
              [:<>
               (section-heading :h2 name)
               (dangerous :div html-content)]
-             (or content ""))]
-          [:div [:a {:href "#"} "️↑ Top"]]])]]]]])
+             (or content ""))
+           [:div [:a {:href "#"} "️↑ Top"]]]])]]]]])
