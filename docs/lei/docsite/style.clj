@@ -68,7 +68,8 @@
      :selected-label-styles {:background :pink
                              :text-decoration-color :darkmagenta
                              :text-decoration-style :dotted}})
-   [:code [:& * {:font-family ["FiraCode" "monospace"]}]]
+   [:code [:& * {:min-width (ch 70)
+                 :font-family ["FiraCode" "monospace"]}]]
 
    ;; Utility classes
    text-align:center
