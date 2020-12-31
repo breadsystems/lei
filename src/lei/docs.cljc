@@ -93,7 +93,6 @@
      (css-result ex)]]])
 
 (defmulti pattern :renderer)
-
 (defmethod pattern :default [data]
   (let [{:lei/keys [name description options examples]
          :keys [doc file line]}
@@ -130,7 +129,6 @@
      :content (pattern m)}))
 
 (defmulti page :renderer)
-
 (defmethod page :default [{:keys [title
                                   head-html
                                   description
