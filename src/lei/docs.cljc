@@ -34,6 +34,12 @@
                        [{} attrs])]
     [tag (merge attrs {:dangerouslySetInnerHTML {:__html html}})]))
 
+(defn inline-style [css]
+  (dangerous :style css))
+
+(defn inline-script [js]
+  (dangerous :script js))
+
 (defn slug [& ss]
   (if ss
     (str/lower-case
@@ -58,21 +64,33 @@
 
 (defmulti format-clj (fn [opts _form]
                                 (:formatter opts)))
-
 (defmethod format-clj :default [format-opts form]
   (let [{:keys [measure zprint-opts]} format-opts]
     (zp/czprint-str form measure zprint-opts)))
 
-(defmulti snippet :renderer)
-
-(defmethod snippet :default [{:keys [form]}]
-  [:pre (format-clj *format-opts* form)])
+(defmulti clj-snippet :renderer)
+(defmethod clj-snippet :default [{:keys [form]}]
+  [:pre [:code.lang-clojure (format-clj *format-opts* form)]])
 
 (defmulti garden-result :renderer)
-
 (defmethod garden-result :default [{:keys [form]}]
   (let [garden-form (walk/postwalk as-garden (eval form))]
-    [:pre (format-clj *format-opts* garden-form)]))
+    [:pre [:code.lang-clojure (format-clj *format-opts* garden-form)]]))
+
+(defmulti css-result :renderer)
+(defmethod css-result :default [{:keys [form]}]
+  [:pre [:code.lang-css (garden/css (eval form))]])
+
+(defmulti example :renderer)
+(defmethod example :default [ex]
+  [:div
+   (clj-snippet ex)
+   [:p "Result:"]
+   [:div {:data-tabs 2}
+    [:div {:data-tab "garden"}
+     (garden-result ex)]
+    [:div {:data-tab "css"}
+     (css-result ex)]]])
 
 (defmulti pattern :renderer)
 
@@ -90,13 +108,11 @@
      (when examples
        [:section
         (section-heading :h3 name "Examples")
-        (for [{:keys [name description] :as example} examples]
+        (for [{:keys [name description] :as ex} examples]
           [:div
            (section-heading :h4 section-name "examples" name)
            (dangerous :div (md/md-to-html-string description))
-           (snippet example)
-           [:p "Result:"]
-           (garden-result example)])])
+           (example ex)])])
      (when options
        [:section
         (section-heading :h3 name "Options")
@@ -116,6 +132,7 @@
 (defmulti page :renderer)
 
 (defmethod page :default [{:keys [title
+                                  head-html
                                   description
                                   styles
                                   heading
@@ -130,7 +147,8 @@
               :content metadesc}])
     [:meta {:name "viewport"
             :content "width=device-width, initial-scale=1"}]
-    (dangerous :style (garden/css styles))]
+    (inline-style (garden/css styles))
+    head-html]
    [:body
     [:header
      [:h1 (or heading title)]
