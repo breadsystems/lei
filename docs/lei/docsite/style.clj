@@ -50,6 +50,7 @@
           :font-size (rem 7)}]
     [:h2 {:font-size (rem 3)}]]
    [:nav [:ul {:margin-top (em 0.5)}]]
+   [(s/& :nav (s/attr :role=navigation)) {:margin-top (em 1)}]
 
    ;; Misc
    [:h1 [:&:after {:content "'🌺'"
@@ -83,11 +84,11 @@
      :selected-label-styles {:background :pink
                              :text-decoration-color :darkmagenta
                              :text-decoration-style :dotted}})
-   ["code:not([class^='lang-'])" {:background light-grey
-                                  :padding "0.1em 0.3em"
-                                  :border "1px solid #e6c7c7"
-                                  :border-radius (em 0.2)
-                                  :color dark-purple}]
+   [(s/& :code (s/not "[class^='lang-']")) {:background light-grey
+                                            :padding "0.1em 0.3em"
+                                            :border "1px solid #e6c7c7"
+                                            :border-radius (em 0.2)
+                                            :color dark-purple}]
    [:code
     [:& * {:min-width (ch 70)
            :font-family ["FiraCode" "monospace"]}]]
