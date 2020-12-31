@@ -1,13 +1,17 @@
 (ns lei.docsite.style
   (:refer-clojure :exclude [* rem])
   (:require
+   [garden.def :as ds]
    [garden.selectors :as s]
+   [garden.stylesheet :as gs :refer [at-font-face]]
    [garden.units :as u :refer [ch percent px em rem]]
    [lei.core :as core]
    [lei.resets :as resets]
    [lei.util :as util :refer [defutil]]))
 
 (s/defselector *)
+
+(ds/defcssfn url)
 
 (def translucent-rose "#ffe9edbf")
 (def green "rgb(7, 128, 7)")
@@ -16,7 +20,9 @@
 (defutil text:small {:font-size (em 0.8)})
 
 (def screen
-  [;; Global defaults
+  [(at-font-face {:font-family "FiraCode"
+                  :src (url "https://unpkg.com/firacode/distr/woff2/FiraCode-Regular.woff")})
+   ;; Global defaults
    resets/box-sizing
    resets/list-style-none
    resets/body
@@ -45,6 +51,7 @@
            :padding-left (rem 2)
            :padding-right (rem 2)}]
    [* {:font-family util/system-sans}]
+   [:code [:& * {:font-family ["FiraCode" "monospace"]}]]
    [:h1 :h2 :h3 :h4 :h5 :h6 {:color green}]
    [:header [* {:text-align :center
                 :font-family util/system-serif
@@ -52,7 +59,6 @@
    [:a {:text-decoration :none
         :font-weight 700
         :color green}]
-   (util/code-fonts)
 
    ;; Utility classes
    text-align:center

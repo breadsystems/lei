@@ -62,6 +62,8 @@
                  ;; which we don't want in the browser.
                  :color? false}})
 
+;; TODO aliases in snippets
+
 (defmulti format-clj (fn [opts _form]
                                 (:formatter opts)))
 (defmethod format-clj :default [format-opts form]
@@ -77,9 +79,19 @@
   (let [garden-form (walk/postwalk as-garden (eval form))]
     [:pre [:code.lang-clojure (format-clj *format-opts* garden-form)]]))
 
+(defn form->css-comment [form]
+  (let [newline "\n * "]
+    (as-> form $
+      (format-clj *format-opts* $)
+      (str/split $ #"\n")
+      (str/join newline $)
+      (str "/*" newline $ "\n */\n"))))
+
 (defmulti css-result :renderer)
 (defmethod css-result :default [{:keys [form]}]
-  [:pre [:code.lang-css (garden/css (eval form))]])
+  [:pre [:code.lang-css
+         (form->css-comment (list 'garden.core/css form))
+         (garden/css (eval form))]])
 
 (defmulti example :renderer)
 (defmethod example :default [ex]
