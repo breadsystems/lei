@@ -37,4 +37,12 @@
                   :html-content (docs/path->html "md/intro.md")}
                  (docs/var->map #'core/stack)
                  (docs/var->map #'core/sidebar)
-                 (docs/var->map #'core/center)]}))))
+                 (docs/var->map #'core/center)
+                 (docs/var->map #'core/cluster)
+                 (docs/var->map #'core/switcher)
+                 (docs/var->map #'core/cover)
+                 (docs/var->map #'core/grid)
+                 (docs/var->map #'core/frame)
+                 (docs/var->map #'core/reel)
+                 (docs/var->map #'core/impostor)
+                 (docs/var->map #'core/icon)]}))))
