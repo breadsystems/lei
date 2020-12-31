@@ -175,13 +175,12 @@
     {:name (:lei/name m)
      :content (pattern m)}))
 
-(defmulti page :renderer)
-(defmethod page :default [{:keys [title
-                                  head-html
-                                  description
-                                  heading
-                                  subheading
-                                  sections]}]
+(defn page [{:keys [title
+                    head-html
+                    description
+                    heading
+                    subheading
+                    sections]}]
   [:html {:lang "en-US"}
    [:head
     [:meta {:charset "utf-8"}]
