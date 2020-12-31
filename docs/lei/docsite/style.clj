@@ -68,8 +68,13 @@
      :selected-label-styles {:background :pink
                              :text-decoration-color :darkmagenta
                              :text-decoration-style :dotted}})
-   [:code [:& * {:min-width (ch 70)
-                 :font-family ["FiraCode" "monospace"]}]]
+   ["code:not([class^='lang-'])" {:background "#e9e9e9"
+                                  :padding "0.1em 0.3em"
+                                  :border "1px solid #e6c7c7"
+                                  :border-radius (em 0.2)}]
+   [:code
+    [:& * {:min-width (ch 70)
+           :font-family ["FiraCode" "monospace"]}]]
 
    ;; Utility classes
    text-align:center

@@ -167,7 +167,7 @@
            [:p
             (when required? [:strong "Required. "])
             (dangerous :div (md/md-to-html-string description))
-            (when default [:span " Default: " [:code default]])]])])]))
+            (when default [:div " Default: " [:code default]])]])])]))
 
 (defn var->map [v]
   (let [m (meta v)]
