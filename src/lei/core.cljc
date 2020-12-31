@@ -221,7 +221,7 @@
         :default :.center}
        {:name :max-width
         :description "The max-width to apply on the centered element."
-        :default "80ch"}
+        :default (ch 80)}
        {:name :align-text?
         :description "Whether to apply a `text-align: center` rule."
         :default "nil"}

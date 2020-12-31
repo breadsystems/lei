@@ -23,8 +23,8 @@
 
   garden.types.CSSUnit
   (as-garden [this]
-    (list (symbol (str "garden.units/" (symbol (.-unit this))))
-          (.-magnitude this))))
+    (str (list (symbol (.-unit this))
+               (.-magnitude this)))))
 
 (defn path->html [path]
   (-> (io/resource path) slurp md/md-to-html-string))
@@ -167,7 +167,7 @@
            [:p
             (when required? [:strong "Required. "])
             (dangerous :div (md/md-to-html-string description))
-            (when default [:div " Default: " [:code default]])]])])]))
+            (when default [:div " Default: " [:code (as-garden default)]])]])])]))
 
 (defn var->map [v]
   (let [m (meta v)]
