@@ -145,7 +145,7 @@
          :keys [doc file line]}
         data
         section-name name]
-    [:article.stack
+    [:<>
      (section-heading :h2 section-name)
      ;; TODO link to source line in VCS
      (when (and file line)
@@ -216,9 +216,10 @@
       [:main.big-stack {:role :main}
        (for [{:keys [name content html-content]} (or sections [])]
          [:div
-          (if html-content
-            [:<>
-             (section-heading :h2 name)
-             [:div {:dangerouslySetInnerHTML {:__html html-content}}]]
-            [:<> (or content "")])
+          [:article.stack
+           (if html-content
+             [:<>
+              (section-heading :h2 name)
+              (dangerous :div html-content)]
+             (or content ""))]
           [:div [:a {:href "#"} "️↑ Top"]]])]]]]])
