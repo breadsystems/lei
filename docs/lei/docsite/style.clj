@@ -19,6 +19,7 @@
 (def light-grey "#e9e9e9")
 (def green "rgb(7, 128, 7)")
 
+(defutil margin-top:0)
 (defutil text-align:center)
 (defutil text:small {:font-size (em 0.8)})
 
@@ -27,29 +28,27 @@
                   :src (url "https://unpkg.com/firacode/distr/woff2/FiraCode-Regular.woff")})
    ;; Global defaults
    resets/box-sizing
+   resets/zero-margin
    resets/list-style-none
    resets/body
    resets/wrap-pre
    resets/motion
    (core/axioms)
-   (core/modular-scale :font-size (em 3.5) :h1 :h2 :h3 :h4 :h5)
+   (core/modular-scale :font-size (em 3.5) :h2 :h3 :h4 :h5)
 
    ;; General layout stuff
    (core/stack {:selector :.big-stack
                 :space (em 6)})
    (core/stack {:selector :.stack
                 :recursive? true
-                :spare (em 1.5)})
+                :space (em 1.5)})
    (core/sidebar {:space (rem 1)
                   :content-min-width (percent 60)
                   :sidebar-width (ch 30)})
-   [:header {:height (vh 100)}
-    [:h1 {:margin-top (vh 15)
-          :font-size (rem 12)}]
-    [:h2 {:font-size (rem 5)}]]
-   [:h2 :h3 :h4 :h5 {:margin-top 0
-                     :margin-bottom 0}]
-   ;; Align nav ul with top of main content
+   [:header {:min-height (vh 50)}
+    [:h1 {:margin-top (vh 7)
+          :font-size (rem 7)}]
+    [:h2 {:font-size (rem 3)}]]
    [:nav [:ul {:margin-top (em 0.5)}]]
 
    ;; Misc
@@ -60,7 +59,7 @@
 
    ;; Fonts and colors
    [:body {:background-color translucent-rose
-           :font-size (px 18)
+           :font-size (px 20)
            :margin-top 0
            :padding-top 0
            :padding-left (rem 2)
@@ -94,5 +93,6 @@
            :font-family ["FiraCode" "monospace"]}]]
 
    ;; Utility classes
+   margin-top:0
    text-align:center
    text:small])

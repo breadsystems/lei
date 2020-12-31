@@ -55,7 +55,7 @@
 (defn section-heading [tag & sections]
   [:<>
    [:a {:name (apply slug sections)}]
-   [:a {:href (apply anchor sections)} [tag (last sections)]]])
+   [:a.margin-top:0 {:href (apply anchor sections)} [tag (last sections)]]])
 
 (def ^:dynamic *format-opts*
   {:measure 70
