@@ -104,12 +104,12 @@
 
 (defmulti clj-snippet :renderer)
 (defmethod clj-snippet :default [{:keys [form]}]
-  [:pre [:code.lang-clojure (format-clj *format-opts* form)]])
+  [:pre [:code.hljs.clj (format-clj *format-opts* form)]])
 
 (defmulti garden-result :renderer)
 (defmethod garden-result :default [{:keys [form]}]
   (let [garden-form (walk/postwalk as-garden (eval form))]
-    [:pre [:code.lang-clojure (format-clj *format-opts* garden-form)]]))
+    [:pre [:code.hljs.clj (format-clj *format-opts* garden-form)]]))
 
 (defn form->css-comment [form]
   (let [newline "\n * "]
@@ -121,7 +121,7 @@
 
 (defmulti css-result :renderer)
 (defmethod css-result :default [{:keys [form]}]
-  [:pre [:code.lang-css
+  [:pre [:code.hljs.css
          (form->css-comment (list 'garden.core/css form))
          (garden/css (eval form))]])
 

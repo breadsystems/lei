@@ -84,7 +84,7 @@
      :selected-label-styles {:background :pink
                              :text-decoration-color :darkmagenta
                              :text-decoration-style :dotted}})
-   [(s/& :code (s/not "[class^='lang-']")) {:background light-grey
+   [(s/& :code (s/not "[class*='hljs']")) {:background light-grey
                                             :padding "0.1em 0.3em"
                                             :border "1px solid #e6c7c7"
                                             :border-radius (em 0.2)
