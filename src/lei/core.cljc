@@ -6,7 +6,7 @@
    [garden.arithmetic :as ga]
    [garden.core :as garden]
    [garden.selectors :as s :refer [defselector >]]
-   [garden.units :as u :refer [ch rem]]))
+   [garden.units :as u :refer [ch em rem]]))
 
 (defselector *)
 
@@ -115,10 +115,10 @@
       :default "nil"}]
     :lei/examples
     [{:name "Default"
-      :form '(lei.core/stack)
+      :form `(stack)
       :description "You can pass nothing (or an empty map) for a default Stack."}
      {:name "Custom selector"
-      :form '(lei.core/stack {:selector :main})
+      :form `(stack {:selector :main})
       :description "Specify a custom selector to target the top-level Stack
              element. Can be any valid Garden selector."}
      {:name "Recursion"
@@ -208,59 +208,59 @@
     (garden/css (sidebar {:sidebar-width (u/px 100)}))
     (garden/css (sidebar {:space (u/rem 1.5)})))
 
-  ((defn
-     ^{:lei/name "Center"
-       :lei/description
-       "Horizontally centered column element."
-       :lei/examples
-       [{:name "Custom selector"
-         :description "Pass a custom selector"
-         :form '(lei.core/center {:selector :.my-center})}
-        {:name "Intrinsic centering"
-         :description "Optionally center child elements of the centered column."
-         :form '(lei.core/center {:intrinsic? true})}
-        {:name "All options"
-         :description "Customizing all available options"
-         :form '(lei.core/center {:selector :.my-center
-                                  :max-width (garden.units/ch 50)
-                                  :align-text? true
-                                  :gutter (garden.units/em 1.5)
-                                  :intrinsic? true})}]
-       :lei/options
-       [{:name :selector
-         :description "The selector to target. Accepts any valid Garden selector."
-         :default :.center}
-        {:name :max-width
-         :description "The max-width to apply on the centered element."
-         :default (ch 80)}
-        {:name :align-text?
-         :description "Whether to apply a `text-align: center` rule."
-         :default "nil"}
-        {:name :gutter
-         :description "The minimum horizontal space on either side of the content."
-         :default "nil"}
-        {:name :intrinsic?
-         :description "Whether to center child elements."
-         :default "nil"}]}
-     center
-     ([]
-      (center {}))
-     ([{:keys [selector max-width align-text? gutter intrinsic?]}]
-      (let [selector (or selector :.center)
-            max-width (or max-width (ch 80))
-            text-rules (when align-text? {:text-align :center})
-            padding-rules (when gutter {:padding-left gutter
-                                        :padding-right gutter})
-            intrinsic-rules (when intrinsic? {:display :flex
-                                              :flex-direction :column
-                                              :align-items :center})]
-        [[selector (merge {:box-sizing :content-box
-                           :margin-left :auto
-                           :margin-right :auto
-                           :max-width max-width}
-                          text-rules
-                          padding-rules
-                          intrinsic-rules)]]))))
+  (defn
+    ^{:lei/name "Center"
+      :lei/description
+      "Horizontally centered column element."
+      :lei/examples
+      [{:name "Custom selector"
+        :description "Pass a custom selector"
+        :form `(center {:selector :.my-center})}
+       {:name "Intrinsic centering"
+        :description "Optionally center child elements of the centered column."
+        :form `(center {:intrinsic? true})}
+       {:name "All options"
+        :description "Customizing all available options"
+        :form `(center {:selector :.my-center
+                        :max-width (ch 50)
+                        :align-text? true
+                        :gutter (em 1.5)
+                        :intrinsic? true})}]
+      :lei/options
+      [{:name :selector
+        :description "The selector to target. Accepts any valid Garden selector."
+        :default :.center}
+       {:name :max-width
+        :description "The max-width to apply on the centered element."
+        :default (ch 80)}
+       {:name :align-text?
+        :description "Whether to apply a `text-align: center` rule."
+        :default "nil"}
+       {:name :gutter
+        :description "The minimum horizontal space on either side of the content."
+        :default "nil"}
+       {:name :intrinsic?
+        :description "Whether to center child elements."
+        :default "nil"}]}
+    center
+    ([]
+     (center {}))
+    ([{:keys [selector max-width align-text? gutter intrinsic?]}]
+     (let [selector (or selector :.center)
+           max-width (or max-width (ch 80))
+           text-rules (when align-text? {:text-align :center})
+           padding-rules (when gutter {:padding-left gutter
+                                       :padding-right gutter})
+           intrinsic-rules (when intrinsic? {:display :flex
+                                             :flex-direction :column
+                                             :align-items :center})]
+       [[selector (merge {:box-sizing :content-box
+                          :margin-left :auto
+                          :margin-right :auto
+                          :max-width max-width}
+                         text-rules
+                         padding-rules
+                         intrinsic-rules)]])))
 
 (defn
   ^{:lei/name "Cluster"
