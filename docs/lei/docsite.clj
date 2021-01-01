@@ -35,6 +35,12 @@
                 :sections
                 [{:name "Intro"
                   :html-content (docs/path->html "md/intro.md")}
+                 {:name "Getting Started"
+                  :html-content (docs/path->html "md/getting-started.md")}
+                 {:name "Generating Docs"
+                  :html-content (docs/path->html "md/docs.md")}
+                 ;; TODO full docs API reference
+                 ;; TODO Actual IA/ToC
                  (docs/var->map #'core/stack)
                  (docs/var->map #'core/sidebar)
                  (docs/var->map #'core/center)
@@ -45,6 +51,4 @@
                  (docs/var->map #'core/frame)
                  (docs/var->map #'core/reel)
                  (docs/var->map #'core/impostor)
-                 (docs/var->map #'core/icon)
-                 {:name "Generating Docs"
-                  :html-content (docs/path->html "md/docs.md")}]}))))
+                 (docs/var->map #'core/icon)]}))))
