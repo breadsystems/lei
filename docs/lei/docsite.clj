@@ -45,4 +45,6 @@
                  (docs/var->map #'core/frame)
                  (docs/var->map #'core/reel)
                  (docs/var->map #'core/impostor)
-                 (docs/var->map #'core/icon)]}))))
+                 (docs/var->map #'core/icon)
+                 {:name "Generating Docs"
+                  :html-content (docs/path->html "md/docs.md")}]}))))
