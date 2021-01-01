@@ -122,13 +122,13 @@
       :description "Specify a custom selector to target the top-level Stack
              element. Can be any valid Garden selector."}
      {:name "Recursion"
-      :form '(lei.core/stack {:recursive? true})
+      :form `(stack {:recursive? true})
       :description "Makes the Stack recursive, targetting all series of
              two or more elements inside rather than only immediate
              children of `selector`."}
      {:name "Exceptions"
-      :form '(lei.core/stack {:exception [:.stack-exception
-                                          {:margin-top (garden.units/rem 3)}]})
+      :form `(stack {:exception [:.stack-exception
+                                 {:margin-top (rem 3)}]})
       :description "Nests the given exception rule(s) under the top-level
                     stack rules."}]}
   stack

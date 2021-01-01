@@ -102,11 +102,11 @@
   (let [{:keys [measure zprint-opts]} format-opts]
     (zp/czprint-str form measure zprint-opts)))
 
-(defmulti clj-snippet :renderer)
+(defmulti clj-snippet :lei/renderer)
 (defmethod clj-snippet :default [{:keys [form]}]
   [:pre [:code.hljs.clj (format-clj *format-opts* form)]])
 
-(defmulti garden-result :renderer)
+(defmulti garden-result :lei/renderer)
 (defmethod garden-result :default [{:keys [form]}]
   (let [garden-form (walk/postwalk as-garden (eval form))]
     [:pre [:code.hljs.clj (format-clj *format-opts* garden-form)]]))
@@ -119,13 +119,13 @@
       (str/join newline $)
       (str "/*" newline $ "\n */\n"))))
 
-(defmulti css-result :renderer)
+(defmulti css-result :lei/renderer)
 (defmethod css-result :default [{:keys [form]}]
   [:pre [:code.hljs.css
          (form->css-comment (list 'garden.core/css form))
          (garden/css (eval form))]])
 
-(defmulti example :renderer)
+(defmulti example :lei/renderer)
 (defmethod example :default [ex]
   [:div.example-result {:data-tabs 2}
    (clj-snippet ex)
@@ -139,7 +139,14 @@
    [:div {:data-tab "css"}
     (css-result ex)]])
 
-(defmulti pattern :renderer)
+(defmulti option :lei/renderer)
+(defmethod option :default [{:keys [required? description default]}]
+  [:div
+   (when required? [:strong "Required. "])
+   (dangerous :div (md/md-to-html-string description))
+   (when default [:div " Default: " [:code (as-garden default)]])])
+
+(defmulti pattern :lei/renderer)
 (defmethod pattern :default [data]
   (let [{:lei/keys [name description options examples]
          :keys [doc file line]}
@@ -162,13 +169,10 @@
      (when options
        [:section
         (section-heading :h3 name "Options")
-        (for [{:keys [name description default required?]} options]
+        (for [{:keys [name] :as opt} options]
           [:div
            (section-heading :h4 section-name "options" name)
-           [:p
-            (when required? [:strong "Required. "])
-            (dangerous :div (md/md-to-html-string description))
-            (when default [:div " Default: " [:code (as-garden default)]])]])])]))
+           (option opt)])])]))
 
 (defn var->map [v]
   (let [m (meta v)]
