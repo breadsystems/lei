@@ -55,4 +55,16 @@
       nil)))
 
 (comment
-  (-main "lei.docsite/index-html" "path" "dist/main.html"))
+  (-main "lei.docsite/index-html" ":path" "dev/test.html")
+
+  ;; Equivalent CLI call looks like:
+  ;;
+  ;;   clj -m lei.gen lei.docsite/index-html :path dev/test.html
+  ;;
+  ;; Note that running this command directly won't work because Lei's
+  ;; production deps do not include Rum. To generate Lei docs from the
+  ;; command line, use the :gen alias:
+  ;;
+  ;;   clj -A:gen lei.docsite/index-html :path dev/test.html
+  ;;
+  )
