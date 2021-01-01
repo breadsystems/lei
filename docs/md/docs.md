@@ -189,7 +189,10 @@ Now, in your top-level docs code, write a normal `defmethod` for each special di
   [{:keys [name description form]}]
   [:pre [:code.hljs.css
          "/* 🦄🌈✨ pretty Unicorn CSS */"
-         (garden)]])
+         ;; This generates a nice CSS comment containing
+         ;; the Clojure code to generate the CSS that follows.
+         (form->css-comment (list 'garden.core/css form))
+         (garden/css (eval form))]])
 ```
 
 Note that `garden-result` and `css-result` are passed the full example map as defined in your pattern's metadata.

@@ -122,7 +122,7 @@
 (defmulti css-result :lei/renderer)
 (defmethod css-result :default [{:keys [form]}]
   [:pre [:code.hljs.css
-         (form->css-comment (list 'garden.core/css form))
+         (form->css-comment (list `garden/css form))
          (garden/css (eval form))]])
 
 (defmulti example :lei/renderer)
