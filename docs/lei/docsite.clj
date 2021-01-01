@@ -37,7 +37,7 @@
                  [:h1 "Lei"]
                  [:h2 "A design system library"]]
                 :sections
-                [{:name "Intro"
+                [{:name "Introduction"
                   :html-content (docs/path->html "md/intro.md")}
                  {:name "Getting Started"
                   :html-content (docs/path->html "md/getting-started.md")}
