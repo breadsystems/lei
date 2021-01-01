@@ -1,10 +1,20 @@
 (ns lei.docsite
   (:require
+   [clojure.java.io :as io]
    [garden.core :as garden]
    [lei.docsite.style :as style]
    [lei.docs :as docs]
    [lei.core :as core]
    [rum.core :as rum]))
+
+(defn- styles []
+  (str
+   (garden/css style/screen)
+   (slurp (io/resource "js/highlight.js/styles/tomorrow-night-eighties.css"))))
+
+(defn- scripts []
+  (str (slurp (io/resource "js/highlight.js/highlight.pack.js"))
+       (slurp (io/resource "js/lei.js"))))
 
 (defn index-html []
   (str
@@ -20,18 +30,12 @@
                          :href "https://fonts.gstatic.com"}]
                  [:link {:rel :stylesheet
                          :href "https://fonts.googleapis.com/css2?family=Heebo&family=Playfair+Display:ital,wght@1,700&display=swap"}]
-                 (docs/inline-style
-                  (str (garden/css style/screen)
-                       (slurp "docs/highlight.js/styles/tomorrow-night-eighties.css")))
-                 (docs/inline-script
-                  (str (slurp "docs/highlight.js/highlight.pack.js")
-                       (slurp "docs/js/lei.js")))]
+                 (docs/inline-style (styles))
+                 (docs/inline-script (scripts))]
                 :header-html
                 [:<>
                  [:h1 "Lei"]
                  [:h2 "A design system library"]]
-                ;; :heading "Lei"
-                ;; :subheading "A design system library"
                 :sections
                 [{:name "Intro"
                   :html-content (docs/path->html "md/intro.md")}

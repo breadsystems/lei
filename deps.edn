@@ -1,4 +1,4 @@
-{:paths ["src" "docs"]
+{:paths ["src" "docs" "resources"]
  :deps {garden                    {:mvn/version "1.3.10"}
         juxt/dirwatch             {:mvn/version "0.2.5"}
         markdown-clj              {:mvn/version "1.10.5"}
