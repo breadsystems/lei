@@ -107,7 +107,7 @@ The patterns in this hypothetical design system are passed to Lei's `docs/var->m
   ,,,)
 ```
 
-Given these definitions, the `docs/var->map` calls above generate a top-level section for each of the two patterns. Each option and each example gets its own subsection automatically. If no options and/or examples are given, those sections are simply omitted.
+Given these definitions, the `docs/var->map` calls above generate a top-level section for each of the two patterns. Each option and each example gets its own subsection automatically. If no options and/or examples are given, those subsections are simply omitted.
 
 ### Doc components
 
