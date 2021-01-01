@@ -182,23 +182,23 @@
 (defn page [{:keys [title
                     head-html
                     description
-                    heading
-                    subheading
+                    header-html
                     sections]}]
   [:html {:lang "en-US"}
    [:head
     [:meta {:charset "utf-8"}]
     [:title title]
-    (when-let [metadesc (or description subheading)]
+    (when description
       [:meta {:name "description"
-              :content metadesc}])
+              :content description}])
     [:meta {:name "viewport"
             :content "width=device-width, initial-scale=1"}]
     head-html]
    [:body
     [:header
-     [:h1 (or heading title)]
-     (when subheading [:h2 subheading])]
+     (if header-html
+       header-html
+       [:h1 title])]
     [:input {:type :radio
              :name :tab-toggle
              :value "css"

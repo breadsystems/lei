@@ -1,3 +1,5 @@
+hljs.initHighlightingOnLoad();
+
 window.addEventListener('DOMContentLoaded', function() {
   Array.from(document.querySelectorAll("[data-nav-tab]"))
     .forEach(function(tab) {

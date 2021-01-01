@@ -12,7 +12,6 @@
    (rum/render-static-markup
     (docs/page {:title "Lei 🌺"
                 :description "A design system library for Clojure and ClojureScript"
-                :styles style/screen
                 :head-html
                 [:<>
                  [:link {:rel :preconnect
@@ -22,16 +21,17 @@
                  [:link {:rel :stylesheet
                          :href "https://fonts.googleapis.com/css2?family=Heebo&family=Playfair+Display:ital,wght@1,700&display=swap"}]
                  (docs/inline-style
-                  (garden/css style/screen))
-                 (docs/inline-style
-                  (slurp "docs/highlight.js/styles/tomorrow-night-eighties.css"))
+                  (str (garden/css style/screen)
+                       (slurp "docs/highlight.js/styles/tomorrow-night-eighties.css")))
                  (docs/inline-script
-                  (slurp "docs/highlight.js/highlight.pack.js"))
-                 (docs/inline-script "hljs.initHighlightingOnLoad();")
-                 (docs/inline-script
-                  (slurp "docs/js/lei.js"))]
-                :heading "Lei"
-                :subheading "A design system library"
+                  (str (slurp "docs/highlight.js/highlight.pack.js")
+                       (slurp "docs/js/lei.js")))]
+                :header-html
+                [:<>
+                 [:h1 "Lei"]
+                 [:h2 "A design system library"]]
+                ;; :heading "Lei"
+                ;; :subheading "A design system library"
                 :sections
                 [{:name "Intro"
                   :html-content (docs/path->html "md/intro.md")}
