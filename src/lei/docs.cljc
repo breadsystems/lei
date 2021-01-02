@@ -174,16 +174,47 @@
            (section-heading :h4 section-name "options" name)
            (option opt)])])]))
 
+(defmethod pattern :lei/docfn [data]
+  (let [{:lei/keys [name description]
+         :keys [doc]}
+        data
+        section-name name]
+    [:<>
+     (section-heading :h3 section-name)
+     [:p (str (or description doc))]]))
+
+(defn api-section [{:keys [name vars]}]
+  {:name name
+   :content
+   [:<>
+    (section-heading :h2 name)
+    (map (comp pattern meta) vars)]})
+
 (defn var->map [v]
   (let [m (meta v)]
     {:name (:lei/name m)
      :content (pattern m)}))
 
-(defn page [{:keys [title
-                    head-html
-                    description
-                    header-html
-                    sections]}]
+(defn
+  ^{:lei/name `page
+    :lei/renderer :lei/docfn
+    :lei/description "Render a full page of documentation with `zero` or more sections."
+    :lei/options
+    [{:name :title
+      :description "The HTML document `title`. Also used for the default `h1` if no
+                    header-html is given."}
+     {:name :description
+      :description "Text for the SEO meta description."}
+     {:name :head-html
+      :description "Arbitrary markup for the `head` element, e.g. scripts and styles."}
+     {:name :header-html
+      :description "Arbitrary markup for the `header` element at the top of the page.
+                    If none is given, defaults to `[:h1 title]`"}]}
+  page [{:keys [title
+                description
+                head-html
+                header-html
+                sections]}]
   [:html {:lang "en-US"}
    [:head
     [:meta {:charset "utf-8"}]

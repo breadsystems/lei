@@ -43,6 +43,8 @@
                   :html-content (docs/path->html "md/getting-started.md")}
                  {:name "Generating Docs"
                   :html-content (docs/path->html "md/docs.md")}
+                 (docs/api-section {:name "Docs API"
+                                    :vars [#'docs/page]})
                  ;; TODO full docs API reference
                  ;; TODO Actual IA/ToC
                  (docs/var->map #'core/stack)
