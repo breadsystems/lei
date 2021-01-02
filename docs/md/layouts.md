@@ -1,0 +1,1 @@
+The following sections go into detail about generating your own Layout Primitives as defined in _Every Layout_. It does **not** go into the justification or usage of these patterns, or how they work. For that, you really should just [buy the book](https://every-layout.dev).
