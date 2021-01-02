@@ -42,6 +42,10 @@
 (defn inline-script [js]
   (dangerous :script js))
 
+(defn markdown-section [{:keys [name path]}]
+  {:name name
+   :html-content (path->html path)})
+
 (defn slug [& ss]
   (if ss
     (str/lower-case

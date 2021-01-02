@@ -38,16 +38,14 @@
                  [:h1 "Lei"]
                  [:h2 "A design system library"]]
                 :sections
-                [{:name "Introduction"
-                  :html-content (docs/path->html "md/intro.md")}
-                 {:name "Getting Started"
-                  :html-content (docs/path->html "md/getting-started.md")}
-                 {:name "Paying for Lei"
-                  :html-content (docs/path->html "md/paying.md")}
-                 {:name "Generating Docs"
-                  :html-content (docs/path->html "md/docs.md")}
-                 ;; TODO full docs API reference
-                 ;; TODO Actual IA/ToC
+                [(docs/markdown-section {:name "Introduction"
+                                         :path "md/intro.md"})
+                 (docs/markdown-section {:name "Getting Started"
+                                         :path "md/getting-started.md"})
+                 (docs/markdown-section {:name "Paying for Lei"
+                                         :path "md/paying.md"})
+                 (docs/markdown-section {:name "Generating Docs"
+                                         :path "md/docs.md"})
                  {:name "Layouts"
                   :content
                   (docs/dangerous :div (docs/path->html "md/layouts.md"))
