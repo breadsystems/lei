@@ -26,9 +26,15 @@
     (str (list (symbol (.-unit this))
                (.-magnitude this)))))
 
-(defn path->html [path]
-  ;; TODO mark header sections
-  (some-> (io/resource path) slurp md/md-to-html-string))
+(defn path->html
+  ([path]
+   (path->html path {}))
+  ([path opts]
+   (let [xforms (:custom-transformers opts)]
+     (some-> (io/resource path)
+             slurp
+             (md/md-to-html-string
+              :custom-transformers xforms)))))
 
 (defn dangerous [tag attrs & [html]]
   (let [[attrs html] (if (map? attrs )
@@ -42,9 +48,9 @@
 (defn inline-script [js]
   (dangerous :script js))
 
-(defn markdown-section [{:keys [name path]}]
+(defn markdown-section [{:keys [name path] :as opts}]
   {:name name
-   :html-content (path->html path)})
+   :html-content (path->html path opts)})
 
 (defn slug [& ss]
   (if ss
