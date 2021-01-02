@@ -27,7 +27,8 @@
                (.-magnitude this)))))
 
 (defn path->html [path]
-  (-> (io/resource path) slurp md/md-to-html-string))
+  ;; TODO mark header sections
+  (some-> (io/resource path) slurp md/md-to-html-string))
 
 (defn dangerous [tag attrs & [html]]
   (let [[attrs html] (if (map? attrs )
@@ -181,7 +182,8 @@
         section-name name]
     [:<>
      (section-heading :h3 section-name)
-     [:p (str (or description doc))]]))
+     (dangerous :p (md/md-to-html-string
+                    (or description doc)))]))
 
 (defn api-section [{:keys [name vars]}]
   {:name name
@@ -189,6 +191,19 @@
    [:<>
     (section-heading :h2 name)
     (map (comp pattern meta) vars)]})
+
+(defmulti nav :lei/renderer)
+(defmethod nav :default [{:keys [sections]}]
+  [:nav {:role :navigation}
+   [:ul {:role :list}
+    (for [{:keys [name children]} (or sections [])]
+      [:li
+       [:a {:href (anchor name)} name]
+       (when children
+         [:ul {:role :list}
+          (for [{:keys [name]} children]
+            [:li
+             [:a {:href (anchor name)} name]])])])]])
 
 (defn var->map [v]
   (let [m (meta v)]
@@ -198,7 +213,7 @@
 (defn
   ^{:lei/name `page
     :lei/renderer :lei/docfn
-    :lei/description "Render a full page of documentation with `zero` or more sections."
+    :lei/description "Render a full page of documentation with zero or more sections."
     :lei/options
     [{:name :title
       :description "The HTML document `title`. Also used for the default `h1` if no
@@ -242,18 +257,25 @@
     [:div.with-sidebar
      [:div
       ;; Sidebar
-      [:nav {:role :navigation}
-       [:ul {:role :list}
-        (for [{:keys [name]} (or sections [])]
-          [:li [:a {:href (anchor name)} name]])]]
+      (nav {:sections sections})
       ;; Main Content
       [:main.big-stack {:role :main}
-       (for [{:keys [name content html-content]} (or sections [])]
+       (for [{:keys [name children content html-content]} (or sections [])]
          [:div
           [:article.stack
-           (if html-content
-             [:<>
-              (section-heading :h2 name)
-              (dangerous :div html-content)]
-             (or content ""))
+           (cond
+             html-content [:<>
+                           (section-heading :h2 name)
+                           (dangerous :div html-content)]
+             ;; Lei's opinion is that hierarchy in the IA is only for the
+             ;; nav; it shouldn't influence how the content sections themselves
+             ;; are rendered. So here, we flatten section children and splice
+             ;; them into the list of top-level sections.
+             children     [:<>
+                           (section-heading :h2 name)
+                           content
+                           (map :content children)]
+             content      content
+             :else        [:p {:style {:color :red}}
+                           "Don't know how to render section: " name])
            [:div [:a {:href "#"} "️↑ Top"]]]])]]]]])

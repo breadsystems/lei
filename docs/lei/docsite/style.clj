@@ -49,7 +49,10 @@
     [:h1 {:margin-top (vh 7)
           :font-size (rem 7)}]
     [:h2 {:font-size (rem 3)}]]
-   [:nav [:ul {:margin-top (em 0.5)}]]
+   [(s/> :nav :ul) {:margin-top (em 0.5)}
+    [:li {:margin-top (em 0.3)}]
+    [(s/> :li :ul) {:padding-left (em 1)
+                    :font-size (em 0.8)}]]
    [(s/& :nav (s/attr :role=navigation)) {:margin-top (em 1)}]
 
    ;; Misc

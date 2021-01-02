@@ -5,6 +5,7 @@
    [lei.docsite.style :as style]
    [lei.docs :as docs]
    [lei.core :as core]
+   [markdown.core :as md]
    [rum.core :as rum]))
 
 (defn- styles []
@@ -41,20 +42,30 @@
                   :html-content (docs/path->html "md/intro.md")}
                  {:name "Getting Started"
                   :html-content (docs/path->html "md/getting-started.md")}
+                 {:name "Paying for Lei"
+                  :html-content (docs/path->html "md/paying.md")}
                  {:name "Generating Docs"
                   :html-content (docs/path->html "md/docs.md")}
-                 (docs/api-section {:name "Docs API"
-                                    :vars [#'docs/page]})
                  ;; TODO full docs API reference
                  ;; TODO Actual IA/ToC
-                 (docs/var->map #'core/stack)
-                 (docs/var->map #'core/sidebar)
-                 (docs/var->map #'core/center)
-                 (docs/var->map #'core/cluster)
-                 (docs/var->map #'core/switcher)
-                 (docs/var->map #'core/cover)
-                 (docs/var->map #'core/grid)
-                 (docs/var->map #'core/frame)
-                 (docs/var->map #'core/reel)
-                 (docs/var->map #'core/impostor)
-                 (docs/var->map #'core/icon)]}))))
+                 {:name "Layouts"
+                  :content
+                  (docs/dangerous :div (docs/path->html "md/layouts.md"))
+                  :children [(docs/var->map #'core/stack)
+                             (docs/var->map #'core/sidebar)
+                             (docs/var->map #'core/center)
+                             (docs/var->map #'core/cluster)
+                             (docs/var->map #'core/switcher)
+                             (docs/var->map #'core/cover)
+                             (docs/var->map #'core/grid)
+                             (docs/var->map #'core/frame)
+                             (docs/var->map #'core/reel)
+                             (docs/var->map #'core/impostor)
+                             (docs/var->map #'core/icon)]}
+                 {:name "Appendix"
+                  :content
+                  [:p "Miscellaneous info about using and developing Lei."]
+                  :children [(docs/api-section {:name "Docs API"
+                                                :vars [#'docs/page]})
+                             {:name "Development"
+                              :content [:p "TODO"]}]}]}))))
