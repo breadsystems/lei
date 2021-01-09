@@ -23,8 +23,8 @@
 
   garden.types.CSSUnit
   (as-garden [this]
-    (str (list (symbol (.-unit this))
-               (.-magnitude this)))))
+    (list (symbol (.-unit this))
+            (.-magnitude this))))
 
 (defn path->html
   ([path]
