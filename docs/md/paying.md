@@ -28,8 +28,4 @@ It is why Cognitect and Nubank have come out strongly in favor of [supporting op
 
 (They unfortunately do not name capitalism itself as the problem, but oh well. You can't win 'em all.)
 
-Matthew Butterick, author of the superb online book *Beautiful Racket*, sums it up nicely:
-
-
-
-So the bottom line is: **if you find this valuable, please pay for it.**
+The bottom line is: **if you find this valuable, please pay for it.**
