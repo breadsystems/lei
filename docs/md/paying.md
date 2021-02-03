@@ -1,18 +1,21 @@
+**For now, Lei is in alpha and should be considered a work in progress. I don't expect payment until it is officially released and actually useful. :) This section is here to establish expectations for the future.**
+
 Yes, Lei is open-source, which means you can download it without paying a cent.
 
 Yes, you should still pay.
 
 ### What to pay
 
-TODO describe pricing in more detail
+Lei uses an honor system for payment. Here are the suggested tiers for one-time payments for usage of the software.
 
-$100 standard
+* $100 standard
+* $50 educator
+* $10 student
+* $250 enterprise
 
-$50 educator
+TODO describe each tier in more detail
 
-$10 student
-
-$250 enterprise
+A Patreon or OpenCollective account for monthly payments is also on the horizon.
 
 ### Why you should pay
 
