@@ -10,10 +10,10 @@ Here is a simple example with an Intro section, two custom patterns (`core/patte
 (ns my.design-system.docs
   (:require
    [garden.core :as garden]
-   [lei.docs :as docs]
+   [lei.docs :as ld]
    [my.design-system.core :as core]
    [rum.core :as rum]))
- 
+
 (def my-docs-styles
   [[:* {:color :red}]])
 
